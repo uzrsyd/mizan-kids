@@ -16,10 +16,10 @@ export default function PrivacyPage() {
           <Badge>Privacy</Badge>
           <h1 className="text-4xl font-black text-[#173E39]">Privacy Policy</h1>
           <p className="text-[#38514d]">
-            Mizan Kids is committed to collecting only the information needed to provide a warm, useful learning experience for families.
+            Mizan Kids is a family-first learning experience that aims to collect only the information needed to support a warm, useful product for parents and children.
           </p>
           <p className="text-[#38514d]">
-            This page is part of the public preview experience and will continue to be updated as launch details are finalized.
+            This page is part of the public preview and early-access experience. Details will continue to be refined with product and legal review before public launch.
           </p>
         </div>
       </Container>

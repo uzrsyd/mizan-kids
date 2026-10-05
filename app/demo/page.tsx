@@ -16,10 +16,10 @@ export default function DemoPage() {
         <div className="mb-8 space-y-4">
           <Badge>Interactive demo</Badge>
           <h1 className="text-4xl font-black text-[#173E39] sm:text-5xl">
-            Try a Free Lesson
+            TRY MIZAN KIDS
           </h1>
           <p className="max-w-2xl text-lg text-[#38514d]">
-            No account. No payment. Just a short sample lesson to show how Mizan Kids helps children learn with structure, encouragement, and progress.
+            Explore sample lessons for different ages — no account or payment needed.
           </p>
         </div>
 

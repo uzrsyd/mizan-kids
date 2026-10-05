@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart, faMosque, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
+import { SourcesLessonNotes } from "@/components/demo/sources-lesson-notes";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 
@@ -16,6 +17,14 @@ type Question = {
   options?: string[];
   correct: string | string[];
   explanation: string;
+  sourceNote?: {
+    sourceType?: string;
+    sourceReference?: string;
+    sourceDisplayText?: string;
+    lessonNote?: string;
+    reviewStatus?: string;
+    madhhabSensitivity?: string;
+  };
 };
 
 type Lesson = {
@@ -26,152 +35,445 @@ type Lesson = {
   questions: Question[];
 };
 
-const lessons: Lesson[] = [
+type LessonGroup = {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  lessons: Lesson[];
+};
+
+const successPhrases = ["Nice work!", "Great job!", "You got it!", "Excellent thinking!", "MashaAllah — well done!"];
+
+const lessonGroups: LessonGroup[] = [
   {
-    id: "salah-basics",
-    title: "Salah Basics",
-    age: "Ages 5–8",
-    summary: "Learn the five daily prayers and basic prayer concepts.",
-    questions: [
+    id: "early-learners",
+    title: "EARLY LEARNERS",
+    subtitle: "Ages 4–5",
+    description: "Big ideas, simple questions, encouraging practice.",
+    lessons: [
       {
-        id: "salah-order",
-        prompt: "Put the five daily prayers in order.",
-        type: "tap-rank",
-        options: ["Maghrib", "Fajr", "Isha", "Dhuhr", "Asr"],
-        correct: ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"],
-        explanation: "Fajr comes first, followed by Dhuhr, Asr, Maghrib, and Isha.",
+        id: "arabic-letters",
+        title: "Arabic Letters",
+        age: "Ages 4–5",
+        summary: "Recognize the first Arabic letters and build early confidence.",
+        questions: [
+          {
+            id: "alif",
+            prompt: "Which letter is Alif?",
+            type: "multiple-choice",
+            options: ["ا", "ب", "ت", "م"],
+            correct: "ا",
+            explanation: "Alif is the first letter of the Arabic alphabet.",
+            sourceNote: {
+              lessonNote: "Alif (ا) is the first letter of the Arabic alphabet.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "baa",
+            prompt: "Which letter is Baa?",
+            type: "multiple-choice",
+            options: ["ب", "ت", "ا", "ج"],
+            correct: "ب",
+            explanation: "Baa is the letter ب.",
+            sourceNote: {
+              lessonNote: "Baa (ب) is the second letter of the Arabic alphabet.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "taa",
+            prompt: "Which letter is Taa?",
+            type: "multiple-choice",
+            options: ["ت", "ب", "ا", "ث"],
+            correct: "ت",
+            explanation: "Taa is the letter ت.",
+            sourceNote: {
+              lessonNote: "Taa (ت) is the third letter of the Arabic alphabet.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "next-after-taa",
+            prompt: "Which letter comes after Taa?",
+            type: "multiple-choice",
+            options: ["ب", "ث", "أ", "ج"],
+            correct: "ث",
+            explanation: "After Taa comes Thaa, which is the letter ث.",
+            sourceNote: {
+              lessonNote: "After Taa comes Thaa (ث), the next letter in the early alphabet sequence.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "arabic-order",
+            prompt: "Put the first five Arabic letters in order.",
+            type: "tap-rank",
+            options: ["ج", "ب", "ث", "ا", "ت"],
+            correct: ["ا", "ب", "ت", "ث", "ج"],
+            explanation: "The first five letters in order are Alif, Baa, Taa, Thaa, and Jeem.",
+            sourceNote: {
+              lessonNote: "The first five letters of the Arabic alphabet are commonly introduced as Alif, Baa, Taa, Thaa, and Jeem.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+        ],
       },
       {
-        id: "salah-count",
-        prompt: "How many obligatory prayers do Muslims pray each day?",
-        type: "multiple-choice",
-        options: ["3", "4", "5", "6"],
-        correct: "5",
-        explanation: "Muslims pray five obligatory prayers each day.",
+        id: "salah-basics",
+        title: "Salah Basics",
+        age: "Ages 4–5",
+        summary: "Learn the five daily prayers and how they fit into the day.",
+        questions: [
+          {
+            id: "morning-prayer",
+            prompt: "Which prayer is prayed in the morning?",
+            type: "multiple-choice",
+            options: ["Asr", "Fajr", "Isha", "Maghrib"],
+            correct: "Fajr",
+            explanation: "Fajr is the morning prayer.",
+            sourceNote: {
+              lessonNote: "Fajr is a morning prayer in the daily sequence of Salah.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "daily-prayers-count",
+            prompt: "How many obligatory prayers do Muslims pray each day?",
+            type: "multiple-choice",
+            options: ["3", "4", "5", "6"],
+            correct: "5",
+            explanation: "Muslims pray five obligatory prayers each day.",
+            sourceNote: {
+              lessonNote: "Muslims pray five obligatory daily prayers, in order across the day.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "after-dhuhr",
+            prompt: "Which prayer comes after Dhuhr?",
+            type: "multiple-choice",
+            options: ["Fajr", "Asr", "Maghrib", "Isha"],
+            correct: "Asr",
+            explanation: "After Dhuhr comes Asr.",
+            sourceNote: {
+              lessonNote: "The daily prayer sequence continues from Dhuhr to Asr.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "after-maghrib",
+            prompt: "Which prayer comes after Maghrib?",
+            type: "multiple-choice",
+            options: ["Asr", "Dhuhr", "Isha", "Fajr"],
+            correct: "Isha",
+            explanation: "Isha comes after Maghrib.",
+            sourceNote: {
+              lessonNote: "Following Maghrib, the next obligatory prayer is Isha.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "salah-order",
+            prompt: "Put the five daily prayers in order from morning to night.",
+            type: "tap-rank",
+            options: ["Maghrib", "Fajr", "Isha", "Dhuhr", "Asr"],
+            correct: ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"],
+            explanation: "The daily prayer order is Fajr, Dhuhr, Asr, Maghrib, and Isha.",
+            sourceNote: {
+              lessonNote: "The five daily prayers are practiced in a consistent sequence across the day.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+        ],
       },
       {
-        id: "salah-after-dhuhr",
-        prompt: "Which prayer comes after Dhuhr?",
-        type: "multiple-choice",
-        options: ["Fajr", "Asr", "Maghrib", "Isha"],
-        correct: "Asr",
-        explanation: "After Dhuhr comes Asr, which is the next prayer in the daily sequence.",
-      },
-      {
-        id: "salah-first",
-        prompt: "Which prayer is first in the daily prayer order?",
-        type: "multiple-choice",
-        options: ["Fajr", "Dhuhr", "Maghrib", "Isha"],
-        correct: "Fajr",
-        explanation: "Fajr is the first obligatory prayer of the day.",
-      },
-      {
-        id: "salah-after-maghrib",
-        prompt: "Which prayer comes after Maghrib?",
-        type: "multiple-choice",
-        options: ["Asr", "Dhuhr", "Isha", "Fajr"],
-        correct: "Isha",
-        explanation: "Isha follows Maghrib in the daily prayer sequence.",
+        id: "good-character",
+        title: "Good Character",
+        age: "Ages 4–5",
+        summary: "Practice manners and kind choices in everyday moments.",
+        questions: [
+          {
+            id: "crayons",
+            prompt: "A friend drops crayons. What is the kind thing to do?",
+            type: "multiple-choice",
+            options: ["Ignore them", "Help pick them up", "Run away", "Take one for yourself"],
+            correct: "Help pick them up",
+            explanation: "Helping someone pick up what they dropped is a kind and caring action.",
+            sourceNote: {
+              lessonNote: "Kindness often shows up in small everyday actions like helping someone pick up what they dropped.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "gift",
+            prompt: "Someone gives you a gift. What should you do?",
+            type: "multiple-choice",
+            options: ["Say nothing", "Thank them", "Hide it", "Complain"],
+            correct: "Thank them",
+            explanation: "Thanking someone is a respectful and grateful response.",
+            sourceNote: {
+              lessonNote: "Saying thank you is a simple way to show appreciation and good manners.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "spill",
+            prompt: "You accidentally spill juice. What should you do?",
+            type: "multiple-choice",
+            options: ["Lie about it", "Tell the truth and help clean up", "Leave it", "Blame a friend"],
+            correct: "Tell the truth and help clean up",
+            explanation: "Honesty and helping clean up shows responsibility and care.",
+            sourceNote: {
+              lessonNote: "Being honest and helping fix a mistake is a strong character habit.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "turn-taking",
+            prompt: "Your sibling is speaking. What should you do?",
+            type: "multiple-choice",
+            options: ["Interrupt", "Listen and wait your turn", "Leave the room", "Yell"],
+            correct: "Listen and wait your turn",
+            explanation: "Listening and waiting your turn shows patience and respect.",
+            sourceNote: {
+              lessonNote: "Waiting your turn and listening shows patience and respect in family life.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "borrowed-toy",
+            prompt: "You borrow a toy from a friend. What should you do when you are done?",
+            type: "multiple-choice",
+            options: ["Keep it", "Give it back carefully", "Throw it away", "Hide it"],
+            correct: "Give it back carefully",
+            explanation: "Returning a borrowed toy carefully shows trustworthiness and respect.",
+            sourceNote: {
+              lessonNote: "Returning borrowed items carefully is a respectful and trustworthy action.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+        ],
       },
     ],
   },
   {
-    id: "arabic-letters",
-    title: "Arabic Letters",
-    age: "Ages 4–7",
-    summary: "Recognize and match beginner Arabic letters.",
-    questions: [
+    id: "growing-learners",
+    title: "GROWING LEARNERS",
+    subtitle: "Ages 8–9",
+    description: "Go deeper with Islamic knowledge, history, and understanding.",
+    lessons: [
       {
-        id: "alif",
-        prompt: "Which letter is Alif?",
-        type: "multiple-choice",
-        options: ["ا", "ب", "ت", "م"],
-        correct: "ا",
-        explanation: "The letter ا is Alif.",
+        id: "seerah-journey",
+        title: "Seerah Journey",
+        age: "Ages 8–9",
+        summary: "Explore key moments in the life and character of Prophet Muhammad ﷺ.",
+        questions: [
+          {
+            id: "birth-city",
+            prompt: "What city was Prophet Muhammad ﷺ born in?",
+            type: "multiple-choice",
+            options: ["Madinah", "Makkah", "Jerusalem", "Taif"],
+            correct: "Makkah",
+            explanation: "Prophet Muhammad ﷺ was born in Makkah.",
+            sourceNote: {
+              lessonNote: "The Prophet Muhammad ﷺ was born in Makkah and grew up there before the early years of his prophethood.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "first-revelation-place",
+            prompt: "Where did the first revelation begin?",
+            type: "multiple-choice",
+            options: ["Masjid al-Haram", "Cave Hira", "Madinah", "Mount Uhud"],
+            correct: "Cave Hira",
+            explanation: "The first revelation began in Cave Hira.",
+            sourceNote: {
+              lessonNote: "The first revelation began in Cave Hira, where the Prophet Muhammad ﷺ received the first verses of the Quran.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "angel-jibril",
+            prompt: "Which angel brought the first revelation?",
+            type: "multiple-choice",
+            options: ["Israfil", "Jibril", "Mikail", "Izra'il"],
+            correct: "Jibril",
+            explanation: "Jibril brought the first revelation to Prophet Muhammad ﷺ.",
+            sourceNote: {
+              lessonNote: "The angel Jibril brought the first revelation to the Prophet Muhammad ﷺ.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "meaning-hijrah",
+            prompt: "What does Hijrah mean?",
+            type: "multiple-choice",
+            options: ["A journey of worship", "Migration from Makkah to Madinah", "A special prayer", "A victory celebration"],
+            correct: "Migration from Makkah to Madinah",
+            explanation: "Hijrah means the migration from Makkah to Madinah.",
+            sourceNote: {
+              lessonNote: "Hijrah refers to the migration from Makkah to Madinah, a major turning point in Islamic history.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "seerah-sequence",
+            prompt: "Put these key Seerah events in order.",
+            type: "tap-rank",
+            options: ["Birth in Makkah", "First revelation", "Hijrah to Madinah", "Farewell pilgrimage"],
+            correct: ["Birth in Makkah", "First revelation", "Hijrah to Madinah", "Farewell pilgrimage"],
+            explanation: "The key sequence is birth in Makkah, first revelation, Hijrah, and the Farewell pilgrimage.",
+            sourceNote: {
+              lessonNote: "These milestones are commonly discussed in Seerah study as key steps in the life of Prophet Muhammad ﷺ.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+        ],
       },
       {
-        id: "letter-b",
-        prompt: "Find the letter ب.",
-        type: "matching",
-        options: ["د", "ب", "ت", "ا"],
-        correct: "ب",
-        explanation: "The correct letter is ب, which is the letter Ba.",
+        id: "prophets-lessons",
+        title: "Prophets & Lessons",
+        age: "Ages 8–9",
+        summary: "Learn from the stories, lessons, and examples of the Prophets.",
+        questions: [
+          {
+            id: "nuh",
+            prompt: "Which Prophet built the Ark?",
+            type: "multiple-choice",
+            options: ["Musa", "Nuh", "Yusuf", "Ibrahim"],
+            correct: "Nuh",
+            explanation: "Nuh built the Ark.",
+            sourceNote: {
+              lessonNote: "Prophet Nuh is remembered for building the Ark in obedience to Allah.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "yunus",
+            prompt: "Which Prophet was swallowed by a great fish?",
+            type: "multiple-choice",
+            options: ["Yunus", "Musa", "Yusuf", "Ibrahim"],
+            correct: "Yunus",
+            explanation: "Yunus was swallowed by a great fish and then turned to Allah in sincere supplication.",
+            sourceNote: {
+              lessonNote: "The story of Prophet Yunus includes his time in the belly of the great fish and his return to Allah.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "musa",
+            prompt: "Which Prophet confronted Fir'awn?",
+            type: "multiple-choice",
+            options: ["Yusuf", "Musa", "Ibrahim", "Nuh"],
+            correct: "Musa",
+            explanation: "Musa confronted Fir'awn.",
+            sourceNote: {
+              lessonNote: "Prophet Musa is remembered for confronting Pharaoh and calling people to faith and justice.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "ibrahim",
+            prompt: "Which Prophet raised the foundations of the Ka'bah with Ismail?",
+            type: "multiple-choice",
+            options: ["Nuh", "Musa", "Ibrahim", "Yusuf"],
+            correct: "Ibrahim",
+            explanation: "Ibrahim raised the foundations of the Ka'bah with Ismail.",
+            sourceNote: {
+              lessonNote: "Prophet Ibrahim and his son Ismail rebuilt the foundations of the Ka'bah.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+          {
+            id: "yusuf",
+            prompt: "Which Prophet is known for the story of dreams, patience, and trust in Allah?",
+            type: "multiple-choice",
+            options: ["Yusuf", "Nuh", "Yunus", "Ibrahim"],
+            correct: "Yusuf",
+            explanation: "Yusuf is known for his story of dreams, patience, and trust in Allah.",
+            sourceNote: {
+              lessonNote: "The story of Prophet Yusuf includes patience, trust in Allah, and a powerful lesson in perseverance.",
+              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+            },
+          },
+        ],
       },
       {
-        id: "match-ta",
-        prompt: "Which letter matches this one?",
-        type: "multiple-choice",
-        options: ["ب", "ت", "ا", "م"],
-        correct: "ت",
-        explanation: "This letter is ت, which is the letter Ta.",
-      },
-      {
-        id: "sequence-letters",
-        prompt: "Which letter comes next? ا → ب → ?",
-        type: "multiple-choice",
-        options: ["ت", "م", "ن", "د"],
-        correct: "ت",
-        explanation: "After ا and ب, the next beginner letter is ت.",
-      },
-      {
-        id: "arabic-match",
-        prompt: "Match the letters correctly.",
-        type: "matching",
-        options: ["ب", "ت", "ا"],
-        correct: "ب",
-        explanation: "This beginner matching practice helps with recognizing the letters you just saw.",
-      },
-    ],
-  },
-  {
-    id: "good-character",
-    title: "Good Character",
-    age: "Ages 6–10",
-    summary: "Practice Islamic manners through everyday situations.",
-    questions: [
-      {
-        id: "broken-toy",
-        prompt: "You accidentally break your sibling’s toy. What should you do?",
-        type: "multiple-choice",
-        options: ["Hide it", "Blame someone else", "Tell the truth and try to make it right", "Walk away"],
-        correct: "Tell the truth and try to make it right",
-        explanation: "Honesty and making things right are the kindest and most responsible choice.",
-      },
-      {
-        id: "new-kid",
-        prompt: "Someone new is sitting alone. What is a kind thing to do?",
-        type: "multiple-choice",
-        options: ["Ignore them", "Ask them to help you", "Invite them to join you", "Leave the room"],
-        correct: "Invite them to join you",
-        explanation: "Including someone and making them feel welcome is a beautiful act of kindness.",
-      },
-      {
-        id: "shoes",
-        prompt: "Your parent asks you to put your shoes away. What is the best response?",
-        type: "multiple-choice",
-        options: ["Delay and complain", "Do it right away and respectfully", "Argue", "Forget about it"],
-        correct: "Do it right away and respectfully",
-        explanation: "Listening and acting quickly shows respect and responsibility.",
-      },
-      {
-        id: "borrowed-item",
-        prompt: "You borrowed something from a friend. What should you do when you are finished?",
-        type: "multiple-choice",
-        options: ["Keep it", "Return it carefully", "Take a break", "Hide it"],
-        correct: "Return it carefully",
-        explanation: "Returning borrowed items with care shows trustworthiness and respect.",
-      },
-      {
-        id: "thanks",
-        prompt: "Someone helps you. What is a good response?",
-        type: "multiple-choice",
-        options: ["Ignore them", "Say nothing", "Thank them", "Run away"],
-        correct: "Thank them",
-        explanation: "Saying thank you is a simple, kind way to show gratitude.",
+        id: "quran-islamic-knowledge",
+        title: "Quran & Islamic Knowledge",
+        age: "Ages 8–9",
+        summary: "Build confidence in Quran basics and essential Islamic knowledge.",
+        questions: [
+          {
+            id: "surah-fatihah",
+            prompt: "What is the first surah of the Quran?",
+            type: "multiple-choice",
+            options: ["Al-Mulk", "Al-Fatihah", "An-Nas", "Al-Baqarah"],
+            correct: "Al-Fatihah",
+            explanation: "Al-Fatihah is the first surah in the Quran.",
+            sourceNote: {
+              lessonNote: "Al-Fatihah is the first surah in the Quran and is recited in every unit of Salah.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "surah-count",
+            prompt: "How many surahs are in the Quran?",
+            type: "multiple-choice",
+            options: ["99", "114", "120", "104"],
+            correct: "114",
+            explanation: "There are 114 surahs in the Quran.",
+            sourceNote: {
+              lessonNote: "The Quran is made up of 114 surahs in total.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "longest-surah",
+            prompt: "What is the longest surah in the Quran?",
+            type: "multiple-choice",
+            options: ["Al-Fatihah", "Al-Baqarah", "An-Nas", "Maryam"],
+            correct: "Al-Baqarah",
+            explanation: "Al-Baqarah is the longest surah in the Quran.",
+            sourceNote: {
+              lessonNote: "Al-Baqarah is the longest surah in the Quran.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "quran-revelation-month",
+            prompt: "In which month did the Quran’s revelation begin?",
+            type: "multiple-choice",
+            options: ["Ramadan", "Muharram", "Rajab", "Sha'ban"],
+            correct: "Ramadan",
+            explanation: "The Quran’s revelation began in Ramadan.",
+            sourceNote: {
+              lessonNote: "The Quran's revelation began in Ramadan, which is a central month in Islamic life and worship.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+          {
+            id: "zakat",
+            prompt: "Which pillar of Islam is obligatory charity?",
+            type: "multiple-choice",
+            options: ["Salah", "Hajj", "Zakat", "Fasting"],
+            correct: "Zakat",
+            explanation: "Zakat is the pillar of charity and giving for those who are able.",
+            sourceNote: {
+              lessonNote: "Zakat is the pillar of obligatory charity in Islam and a key act of social care.",
+              reviewStatus: "Reviewed for age-appropriate learning.",
+            },
+          },
+        ],
       },
     ],
   },
 ];
+
+const allLessons = lessonGroups.flatMap((group) => group.lessons);
+const lessons = allLessons;
 
 function normalizeCorrect(question: Question): string[] {
   return Array.isArray(question.correct) ? question.correct : [question.correct];
@@ -190,6 +492,7 @@ export function InteractiveDemo() {
   const [explanation, setExplanation] = useState<string | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
+  const [lastSuccessIndex, setLastSuccessIndex] = useState<number | null>(null);
   const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
     if (typeof window === "undefined") return [];
 
@@ -252,6 +555,7 @@ export function InteractiveDemo() {
     setLessonIndex(index);
     setQuestionIndex(0);
     setCorrectCount(0);
+    setLastSuccessIndex(null);
     resetQuestionState();
     setView("lesson");
   }
@@ -266,10 +570,20 @@ export function InteractiveDemo() {
     setIsAnswerCorrect(correct);
 
     if (correct) {
-      setFeedback("You got it!");
+      let nextIndex = (lessonIndex + questionIndex + completedLessons.length) % successPhrases.length;
+      const available = successPhrases
+        .map((_, index) => index)
+        .filter((index) => index !== lastSuccessIndex);
+
+      if (available.length > 0) {
+        nextIndex = available[(lessonIndex + questionIndex + completedLessons.length) % available.length];
+      }
+
+      setLastSuccessIndex(nextIndex);
+      setFeedback(successPhrases[nextIndex]);
       setCorrectCount((count) => count + 1);
     } else {
-      setFeedback("Almost! Let’s try that once more.");
+      setFeedback("Let’s try that one again.");
     }
 
     setExplanation(activeQuestion.explanation);
@@ -277,8 +591,10 @@ export function InteractiveDemo() {
   }
 
   function advanceQuestion() {
+    const nextLessonScore = isAnswerCorrect ? correctCount + 1 : correctCount;
+
     if (isLastQuestion) {
-      const nextScores = { ...lessonScores, [activeLesson.id]: correctCount };
+      const nextScores = { ...lessonScores, [activeLesson.id]: nextLessonScore };
       const nextCompleted = Array.from(new Set([...completedLessons, activeLesson.id]));
       setLessonScores(nextScores);
       setCompletedLessons(nextCompleted);
@@ -304,6 +620,7 @@ export function InteractiveDemo() {
     setFeedback(null);
     setExplanation(null);
     setIsAnswerCorrect(null);
+    setLastSuccessIndex(null);
   }
 
   function renderLessonIllustration(lessonId: string) {
@@ -431,8 +748,8 @@ export function InteractiveDemo() {
         <div className="space-y-6">
           <div className="space-y-3">
             <p className="text-sm uppercase tracking-[0.18em] text-[#5D6E6A]">Try Mizan Kids</p>
-            <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">Choose one of three short sample lessons.</h2>
-            <p className="text-base text-[#38514d]">No account or payment required.</p>
+            <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">Explore sample lessons for different ages.</h2>
+            <p className="text-base text-[#38514d]">No account or payment needed.</p>
           </div>
 
           <div className="rounded-2xl border border-[#E7DCC7] bg-[#F7F1E7] p-4 text-sm text-[#173E39]">
@@ -444,38 +761,50 @@ export function InteractiveDemo() {
             </div>
           </div>
 
-          <div className="grid gap-4 md:grid-cols-3">
-            {lessons.map((lesson, index) => {
-              const completed = completedLessons.includes(lesson.id);
-              return (
-                <div key={lesson.id} className="flex h-full flex-col rounded-[24px] border border-[#E7DCC7] bg-[#FFFDFB] p-5 shadow-[0_10px_22px_rgba(23,62,57,0.03)]">
-                  <div className="mb-4 flex items-center justify-between gap-3">
-                    <p className="text-xs uppercase tracking-[0.18em] text-[#5D6E6A]">Lesson {index + 1}</p>
-                    {completed ? (
-                      <span className="rounded-full bg-[#EAF4F2] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#173E39]">Completed</span>
-                    ) : null}
-                  </div>
-
-                  <div className="mb-4">{renderLessonIllustration(lesson.id)}</div>
-
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-black text-[#173E39]">{lesson.title}</h3>
-                    <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5D6E6A]">
-                      <span>{lesson.age}</span>
-                      <span>•</span>
-                      <span>5 quick questions</span>
-                      <span>•</span>
-                      <span>About 3 min</span>
-                    </div>
-                    <p className="mt-4 text-sm leading-6 text-[#38514d]">{lesson.summary}</p>
-                  </div>
-
-                  <Button type="button" className="mt-6 w-full" onClick={() => startLesson(index)}>
-                    {completed ? "Review Lesson" : "Start Lesson"}
-                  </Button>
+          <div className="space-y-8">
+            {lessonGroups.map((group) => (
+              <div key={group.id} className="space-y-4">
+                <div className="space-y-2">
+                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#5D6E6A]">{group.title}</p>
+                  <p className="text-lg font-semibold text-[#173E39]">{group.subtitle}</p>
+                  <p className="text-sm text-[#38514d]">{group.description}</p>
                 </div>
-              );
-            })}
+
+                <div className="grid gap-4 md:grid-cols-3">
+                  {group.lessons.map((lesson, index) => {
+                    const completed = completedLessons.includes(lesson.id);
+                    return (
+                      <div key={lesson.id} className="flex h-full flex-col rounded-[24px] border border-[#E7DCC7] bg-[#FFFDFB] p-5 shadow-[0_10px_22px_rgba(23,62,57,0.03)]">
+                        <div className="mb-4 flex items-center justify-between gap-3">
+                          <p className="text-xs uppercase tracking-[0.18em] text-[#5D6E6A]">Lesson {index + 1}</p>
+                          {completed ? (
+                            <span className="rounded-full bg-[#EAF4F2] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#173E39]">✓ Completed</span>
+                          ) : null}
+                        </div>
+
+                        <div className="mb-4">{renderLessonIllustration(lesson.id)}</div>
+
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-black text-[#173E39]">{lesson.title}</h3>
+                          <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5D6E6A]">
+                            <span>{lesson.age}</span>
+                            <span>•</span>
+                            <span>5 quick questions</span>
+                            <span>•</span>
+                            <span>About 3 min</span>
+                          </div>
+                          <p className="mt-4 text-sm leading-6 text-[#38514d]">{lesson.summary}</p>
+                        </div>
+
+                        <Button type="button" className="mt-6 w-full" onClick={() => startLesson(allLessons.findIndex((item) => item.id === lesson.id))}>
+                          {completed ? "Review Lesson" : "Start Lesson"}
+                        </Button>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </Card>
@@ -483,7 +812,14 @@ export function InteractiveDemo() {
   }
 
   if (view === "summary") {
-    const scoreOutOfFive = lessonScores[activeLesson.id] ?? correctCount;
+    const outcomes = {
+      "arabic-letters": ["Arabic letters", "letter recognition", "basic reading confidence"],
+      "salah-basics": ["daily prayer names", "prayer order", "Salah basics"],
+      "good-character": ["kindness", "responsibility", "good manners"],
+      "seerah-journey": ["Prophet Muhammad’s story", "major milestones", "Islamic history"],
+      "prophets-lessons": ["Prophets stories", "key lessons", "character values"],
+      "quran-islamic-knowledge": ["Quran basics", "Islamic knowledge", "faith foundations"],
+    }[activeLesson.id] ?? ["Islamic learning", "practice", "confidence"];
 
     return (
       <Card className="bg-white p-6 sm:p-8">
@@ -492,16 +828,13 @@ export function InteractiveDemo() {
             MashaAllah!
           </div>
           <h2 className="text-3xl font-black text-[#173E39]">{activeLesson.title} complete</h2>
-          <p className="text-lg text-[#38514d]">
-            You answered {scoreOutOfFive} of {activeLesson.questions.length} correctly.
-          </p>
+          <p className="text-lg text-[#38514d]">You finished all 5 questions.</p>
           <div className="rounded-2xl bg-[#F7F1E7] p-4 text-sm text-[#38514d]">
             <p className="font-semibold text-[#173E39]">You practiced:</p>
             <ul className="mt-2 space-y-2">
-              <li>✓ {activeLesson.title}</li>
-              <li>✓ Daily prayer names</li>
-              <li>✓ Prayer order</li>
-              <li>✓ Basic Salah knowledge</li>
+              <li>✓ {outcomes[0]}</li>
+              <li>✓ {outcomes[1]}</li>
+              <li>✓ {outcomes[2]}</li>
             </ul>
           </div>
 
@@ -519,18 +852,18 @@ export function InteractiveDemo() {
       <Card className="bg-white p-6 sm:p-8">
         <div className="space-y-5">
           <div className="inline-flex rounded-full bg-[#EAF4F2] px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#173E39]">
-            You explored Mizan Kids!
+            MashaAllah!
           </div>
-          <h2 className="text-3xl font-black text-[#173E39]">All three sample lessons are complete.</h2>
+          <h2 className="text-3xl font-black text-[#173E39]">All 6 sample lessons are complete.</h2>
           <div className="space-y-2 text-base text-[#38514d]">
-            <p>✓ Salah Basics</p>
-            <p>✓ Arabic Letters</p>
-            <p>✓ Good Character</p>
+            {allLessons.map((lesson) => (
+              <p key={lesson.id}>✓ {lesson.title}</p>
+            ))}
           </div>
 
           <div className="rounded-2xl bg-[#F7F1E7] p-4 text-sm text-[#38514d]">
             <p className="font-semibold text-[#173E39]">Want more structured Islamic learning for your child?</p>
-            <p className="mt-2">Join Early Access — Get 30 Days Free</p>
+            <p className="mt-2">Join Early Access — get 30 days free.</p>
             <p className="mt-1">Launching December 1, 2026</p>
             <p className="mt-1">No credit card required</p>
           </div>
@@ -568,7 +901,7 @@ export function InteractiveDemo() {
         <div className="space-y-3">
           <h3 className="text-3xl font-black leading-tight text-[#173E39]">{activeQuestion.prompt}</h3>
           {activeQuestion.type === "tap-rank" ? (
-            <p className="text-base text-[#38514d]">Tap each prayer starting with the first.</p>
+            <p className="text-base text-[#38514d]">Tap each item in the correct order.</p>
           ) : null}
         </div>
 
@@ -578,7 +911,16 @@ export function InteractiveDemo() {
           <div className="rounded-2xl border border-[#D8D0C1] bg-[#F7F1E7] p-4 text-sm text-[#38514d]">
             <p className="text-lg font-black text-[#173E39]">{feedback}</p>
             <p className="mt-2 leading-6">{explanation}</p>
+            {activeQuestion.sourceNote ? <div className="mt-4"><SourcesLessonNotes note={activeQuestion.sourceNote} /></div> : null}
           </div>
+        ) : null}
+
+        {!submitted ? (
+          activeQuestion.sourceNote ? (
+            <div className="pt-2">
+              <SourcesLessonNotes note={activeQuestion.sourceNote} />
+            </div>
+          ) : null
         ) : null}
 
         <div className="flex flex-col gap-3 sm:flex-row">

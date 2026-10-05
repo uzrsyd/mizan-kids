@@ -16,7 +16,7 @@ export default function TermsPage() {
           <Badge>Terms</Badge>
           <h1 className="text-4xl font-black text-[#173E39]">Terms of use</h1>
           <p className="text-[#38514d]">
-            These terms are part of the public preview experience for Mizan Kids and will continue to be refined before the final launch.
+            These terms describe the public preview and early-access experience for Mizan Kids. They are a working draft for review and will continue to be updated as the product and launch plans are finalized.
           </p>
         </div>
       </Container>

@@ -223,6 +223,54 @@ export default function Home() {
         </Container>
       </Section>
 
+      <Section className="bg-[#F7F1E7] py-12 sm:py-16">
+        <Container className="rounded-[32px] border border-[#E3D8C5] bg-[#F8F5F0] p-6 sm:p-8 lg:p-10">
+          <div className="grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div className="space-y-5">
+              <Badge>Demo preview</Badge>
+              <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">Try a real Mizan Kids lesson.</h2>
+              <p className="text-lg text-[#38514d]">
+                Short, age-appropriate activities help children build confidence step by step — with friendly guidance and clear learning outcomes.
+              </p>
+              <div className="flex flex-col gap-3 sm:flex-row">
+                <Button href="/demo">Try a Free Lesson</Button>
+                <Button href="/#early-access" variant="ghost">Join Early Access</Button>
+              </div>
+            </div>
+
+            <div className="rounded-[28px] border border-[#E7DCC7] bg-white p-5 shadow-[0_12px_24px_rgba(23,62,57,0.04)]">
+              <div className="mb-4 flex items-center justify-between gap-3 text-[11px] font-bold uppercase tracking-[0.16em] text-[#5D6E6A]">
+                <span>Early Learners</span>
+                <span>Ages 4–5</span>
+              </div>
+
+              <div className="rounded-[22px] border border-[#E7DCC7] bg-[#F7F1E7] p-4">
+                <div className="mb-4 flex items-center justify-between gap-3 text-sm font-semibold text-[#173E39]">
+                  <span>Arabic Letters</span>
+                  <span className="rounded-full bg-[#EAF4F2] px-2 py-1 text-[10px] font-black uppercase tracking-[0.14em] text-[#173E39]">5 Qs</span>
+                </div>
+
+                <div className="flex h-16 items-center justify-center rounded-[18px] border border-[#E7DCC7] bg-white">
+                  <span
+                    aria-label="Arabic learning"
+                    className="flex h-10 w-10 items-center justify-center rounded-[10px] bg-[#E8F0EA] text-[28px] font-black leading-[1] text-[#173E39]"
+                    style={{ fontFamily: '"Noto Naskh Arabic", "Segoe UI", serif' }}
+                  >
+                    ب
+                  </span>
+                </div>
+
+                <div className="mt-4 space-y-2 text-sm text-[#38514d]">
+                  <p>✓ Recognize the first Arabic letters</p>
+                  <p>✓ Build early confidence</p>
+                  <p>✓ Learn in short, friendly steps</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
       <Section id="for-parents" className="bg-[#F7F1E7] py-12 sm:py-16">
         <Container className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div className="space-y-5">
