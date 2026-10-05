@@ -1,19 +1,32 @@
 import "server-only";
 
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 
-export function getSupabaseServerClient() {
+export async function getSupabaseServerClient() {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseServiceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
-  if (!supabaseUrl || !supabaseServiceRoleKey) {
-    return null;
+  if (!supabaseUrl || !supabasePublishableKey) {
+    throw new Error("Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY");
   }
 
-  return createClient(supabaseUrl, supabaseServiceRoleKey, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
+  const cookieStore = await cookies();
+
+  return createServerClient(supabaseUrl, supabasePublishableKey, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        try {
+          for (const cookie of cookiesToSet) {
+            cookieStore.set(cookie.name, cookie.value, cookie.options);
+          }
+        } catch {
+          // Ignore cookie write errors in the app shell until the future authenticated flows are enabled.
+        }
+      },
     },
   });
 }
