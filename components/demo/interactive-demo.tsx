@@ -67,7 +67,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Alif is the first letter of the Arabic alphabet.",
             sourceNote: {
               lessonNote: "Alif (ا) is the first letter of the Arabic alphabet.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -79,7 +78,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Baa is the letter ب.",
             sourceNote: {
               lessonNote: "Baa (ب) is the second letter of the Arabic alphabet.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -91,7 +89,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Taa is the letter ت.",
             sourceNote: {
               lessonNote: "Taa (ت) is the third letter of the Arabic alphabet.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -103,7 +100,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "After Taa comes Thaa, which is the letter ث.",
             sourceNote: {
               lessonNote: "After Taa comes Thaa (ث), the next letter in the early alphabet sequence.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -115,7 +111,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "The first five letters in order are Alif, Baa, Taa, Thaa, and Jeem.",
             sourceNote: {
               lessonNote: "The first five letters of the Arabic alphabet are commonly introduced as Alif, Baa, Taa, Thaa, and Jeem.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
         ],
@@ -135,7 +130,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Fajr is the morning prayer.",
             sourceNote: {
               lessonNote: "Fajr is a morning prayer in the daily sequence of Salah.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -147,7 +141,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Muslims pray five obligatory prayers each day.",
             sourceNote: {
               lessonNote: "Muslims pray five obligatory daily prayers, in order across the day.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -159,7 +152,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "After Dhuhr comes Asr.",
             sourceNote: {
               lessonNote: "The daily prayer sequence continues from Dhuhr to Asr.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -171,7 +163,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Isha comes after Maghrib.",
             sourceNote: {
               lessonNote: "Following Maghrib, the next obligatory prayer is Isha.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -183,7 +174,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "The daily prayer order is Fajr, Dhuhr, Asr, Maghrib, and Isha.",
             sourceNote: {
               lessonNote: "The five daily prayers are practiced in a consistent sequence across the day.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
         ],
@@ -203,7 +193,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Helping someone pick up what they dropped is a kind and caring action.",
             sourceNote: {
               lessonNote: "Kindness often shows up in small everyday actions like helping someone pick up what they dropped.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -215,7 +204,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Thanking someone is a respectful and grateful response.",
             sourceNote: {
               lessonNote: "Saying thank you is a simple way to show appreciation and good manners.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -227,7 +215,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Honesty and helping clean up shows responsibility and care.",
             sourceNote: {
               lessonNote: "Being honest and helping fix a mistake is a strong character habit.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -239,7 +226,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Listening and waiting your turn shows patience and respect.",
             sourceNote: {
               lessonNote: "Waiting your turn and listening shows patience and respect in family life.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -251,7 +237,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Returning a borrowed toy carefully shows trustworthiness and respect.",
             sourceNote: {
               lessonNote: "Returning borrowed items carefully is a respectful and trustworthy action.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
         ],
@@ -279,7 +264,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Prophet Muhammad ﷺ was born in Makkah.",
             sourceNote: {
               lessonNote: "The Prophet Muhammad ﷺ was born in Makkah and grew up there before the early years of his prophethood.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
           {
@@ -291,7 +275,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "The first revelation began in Cave Hira.",
             sourceNote: {
               lessonNote: "The first revelation began in Cave Hira, where the Prophet Muhammad ﷺ received the first verses of the Quran.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
           {
@@ -303,7 +286,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Jibril brought the first revelation to Prophet Muhammad ﷺ.",
             sourceNote: {
               lessonNote: "The angel Jibril brought the first revelation to the Prophet Muhammad ﷺ.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
           {
@@ -315,7 +297,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Hijrah means the migration from Makkah to Madinah.",
             sourceNote: {
               lessonNote: "Hijrah refers to the migration from Makkah to Madinah, a major turning point in Islamic history.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
           {
@@ -327,7 +308,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "The key sequence is birth in Makkah, first revelation, Hijrah, and the Farewell pilgrimage.",
             sourceNote: {
               lessonNote: "These milestones are commonly discussed in Seerah study as key steps in the life of Prophet Muhammad ﷺ.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
         ],
@@ -347,7 +327,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Nuh built the Ark.",
             sourceNote: {
               lessonNote: "Prophet Nuh is remembered for building the Ark in obedience to Allah.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
           {
@@ -359,7 +338,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Yunus was swallowed by a great fish and then turned to Allah in sincere supplication.",
             sourceNote: {
               lessonNote: "The story of Prophet Yunus includes his time in the belly of the great fish and his return to Allah.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
           {
@@ -371,7 +349,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Musa confronted Fir'awn.",
             sourceNote: {
               lessonNote: "Prophet Musa is remembered for confronting Pharaoh and calling people to faith and justice.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
           {
@@ -382,8 +359,7 @@ const lessonGroups: LessonGroup[] = [
             correct: "Ibrahim",
             explanation: "Ibrahim raised the foundations of the Ka'bah with Ismail.",
             sourceNote: {
-              lessonNote: "Prophet Ibrahim and his son Ismail rebuilt the foundations of the Ka'bah.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
+              lessonNote: "Prophet Ibrahim and his son Ismail raised the foundations of the Ka'bah.",
             },
           },
           {
@@ -395,7 +371,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Yusuf is known for his story of dreams, patience, and trust in Allah.",
             sourceNote: {
               lessonNote: "The story of Prophet Yusuf includes patience, trust in Allah, and a powerful lesson in perseverance.",
-              reviewStatus: "Reviewed for age-appropriate and historical accuracy.",
             },
           },
         ],
@@ -414,8 +389,7 @@ const lessonGroups: LessonGroup[] = [
             correct: "Al-Fatihah",
             explanation: "Al-Fatihah is the first surah in the Quran.",
             sourceNote: {
-              lessonNote: "Al-Fatihah is the first surah in the Quran and is recited in every unit of Salah.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
+              lessonNote: "Al-Fatihah is the first surah in the Quran. It is also an important part of Salah.",
             },
           },
           {
@@ -427,7 +401,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "There are 114 surahs in the Quran.",
             sourceNote: {
               lessonNote: "The Quran is made up of 114 surahs in total.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -439,7 +412,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Al-Baqarah is the longest surah in the Quran.",
             sourceNote: {
               lessonNote: "Al-Baqarah is the longest surah in the Quran.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -451,7 +423,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "The Quran’s revelation began in Ramadan.",
             sourceNote: {
               lessonNote: "The Quran's revelation began in Ramadan, which is a central month in Islamic life and worship.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
           {
@@ -463,7 +434,6 @@ const lessonGroups: LessonGroup[] = [
             explanation: "Zakat is the pillar of charity and giving for those who are able.",
             sourceNote: {
               lessonNote: "Zakat is the pillar of obligatory charity in Islam and a key act of social care.",
-              reviewStatus: "Reviewed for age-appropriate learning.",
             },
           },
         ],

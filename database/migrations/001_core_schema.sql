@@ -1,4 +1,17 @@
+-- LEGACY REFERENCE ONLY. DO NOT RUN AGAINST SUPABASE.
+-- Canonical executable migrations live in supabase/migrations/.
+-- See database/migrations/README.md.
+
 CREATE EXTENSION IF NOT EXISTS citext;
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+CREATE OR REPLACE FUNCTION public.set_updated_at()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE IF NOT EXISTS profiles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -21,45 +34,49 @@ CREATE TABLE IF NOT EXISTS child_profiles (
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS early_access_signups (
+CREATE TABLE IF NOT EXISTS public.early_access_signups (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  first_name TEXT,
-  email CITEXT NOT NULL,
-  normalized_email CITEXT NOT NULL UNIQUE,
-  number_of_children INTEGER NOT NULL DEFAULT 0,
-  child_age_ranges TEXT[],
-  learning_interests TEXT[],
-  referral_source TEXT,
-  utm_source TEXT,
-  utm_medium TEXT,
-  utm_campaign TEXT,
-  utm_content TEXT,
-  utm_term TEXT,
-  referrer TEXT,
-  landing_page TEXT,
-  early_access_status TEXT NOT NULL DEFAULT 'registered',
-  thirty_day_free_eligible BOOLEAN NOT NULL DEFAULT TRUE,
-  confirmation_email_sent_at TIMESTAMPTZ,
-  launch_email_sent_at TIMESTAMPTZ,
-  last_email_status TEXT,
+  parent_first_name TEXT NOT NULL,
+  email TEXT NOT NULL,
+  normalized_email TEXT NOT NULL UNIQUE,
+  number_of_children INTEGER NOT NULL CHECK (number_of_children >= 1),
+  child_age_ranges JSONB NOT NULL DEFAULT '[]'::jsonb,
+  learning_interests TEXT[] NOT NULL DEFAULT '{}',
+  referral_source TEXT NULL,
+  utm_source TEXT NULL,
+  utm_medium TEXT NULL,
+  utm_campaign TEXT NULL,
+  utm_content TEXT NULL,
+  utm_term TEXT NULL,
+  referrer_url TEXT NULL,
+  landing_path TEXT NULL,
+  status TEXT NOT NULL DEFAULT 'registered' CHECK (
+    status IN ('registered', 'beta_invited', 'beta_activated', 'launch_invited', 'activated', 'declined')
+  ),
+  early_access_eligible BOOLEAN NOT NULL DEFAULT true,
+  confirmation_email_status TEXT NOT NULL DEFAULT 'pending' CHECK (
+    confirmation_email_status IN ('pending', 'sent', 'failed', 'suppressed')
+  ),
+  confirmation_email_sent_at TIMESTAMPTZ NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE TABLE IF NOT EXISTS promotional_entitlements (
+CREATE TABLE IF NOT EXISTS public.promotional_entitlements (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email CITEXT NOT NULL,
-  normalized_email CITEXT NOT NULL,
-  user_id UUID,
+  email TEXT NOT NULL,
+  normalized_email TEXT NOT NULL,
+  user_id UUID NULL REFERENCES auth.users(id) ON DELETE SET NULL,
   promotion_code TEXT NOT NULL,
   entitlement_type TEXT NOT NULL,
-  duration_days INTEGER NOT NULL,
-  eligibility_source TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'eligible',
-  granted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  redeemed_at TIMESTAMPTZ,
-  activation_date TIMESTAMPTZ,
-  expiration_date TIMESTAMPTZ,
+  duration_days INTEGER NOT NULL CHECK (duration_days > 0),
+  source TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'eligible' CHECK (
+    status IN ('eligible', 'activated', 'expired', 'revoked')
+  ),
+  eligible_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  activated_at TIMESTAMPTZ NULL,
+  expires_at TIMESTAMPTZ NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE (normalized_email, promotion_code)
@@ -207,9 +224,10 @@ CREATE TABLE IF NOT EXISTS skill_recommendations (
 
 CREATE INDEX IF NOT EXISTS idx_profiles_auth_user_id ON profiles(auth_user_id);
 CREATE INDEX IF NOT EXISTS idx_child_profiles_parent_user_id ON child_profiles(parent_user_id);
-CREATE INDEX IF NOT EXISTS idx_early_access_email ON early_access_signups(normalized_email);
-CREATE INDEX IF NOT EXISTS idx_promotional_entitlements_email ON promotional_entitlements(normalized_email);
-CREATE INDEX IF NOT EXISTS idx_promotional_entitlements_status ON promotional_entitlements(status);
+CREATE INDEX IF NOT EXISTS idx_early_access_signups_status ON public.early_access_signups(status);
+CREATE INDEX IF NOT EXISTS idx_early_access_signups_created_at ON public.early_access_signups(created_at);
+CREATE INDEX IF NOT EXISTS idx_promotional_entitlements_status ON public.promotional_entitlements(status);
+CREATE INDEX IF NOT EXISTS idx_promotional_entitlements_created_at ON public.promotional_entitlements(created_at);
 CREATE INDEX IF NOT EXISTS idx_email_suppressions_email ON email_suppressions(normalized_email);
 CREATE INDEX IF NOT EXISTS idx_questions_skill_id ON questions(skill_id);
 CREATE INDEX IF NOT EXISTS idx_question_options_question_id ON question_options(question_id);
@@ -217,23 +235,18 @@ CREATE INDEX IF NOT EXISTS idx_skills_subject_id ON skills(subject_id);
 
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE child_profiles ENABLE ROW LEVEL SECURITY;
-ALTER TABLE early_access_signups ENABLE ROW LEVEL SECURITY;
-ALTER TABLE promotional_entitlements ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.early_access_signups ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.promotional_entitlements ENABLE ROW LEVEL SECURITY;
 ALTER TABLE email_suppressions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE email_delivery_logs ENABLE ROW LEVEL SECURITY;
 
-CREATE POLICY "Public can insert early access signup"
-ON early_access_signups
-FOR INSERT
-WITH CHECK (true);
-
 CREATE POLICY "Admin can read all early access signups"
-ON early_access_signups
+ON public.early_access_signups
 FOR SELECT
 USING (auth.jwt() ->> 'role' = 'admin');
 
 CREATE POLICY "Admin can read all promo entitlements"
-ON promotional_entitlements
+ON public.promotional_entitlements
 FOR SELECT
 USING (auth.jwt() ->> 'role' = 'admin');
 
@@ -241,6 +254,16 @@ CREATE POLICY "Users can read own profile"
 ON profiles
 FOR SELECT
 USING (auth.uid() = id OR auth.jwt() ->> 'role' = 'admin');
+
+CREATE TRIGGER set_updated_at_early_access_signups
+BEFORE UPDATE ON public.early_access_signups
+FOR EACH ROW
+EXECUTE FUNCTION public.set_updated_at();
+
+CREATE TRIGGER set_updated_at_promotional_entitlements
+BEFORE UPDATE ON public.promotional_entitlements
+FOR EACH ROW
+EXECUTE FUNCTION public.set_updated_at();
 
 CREATE POLICY "Users can read own child profiles"
 ON child_profiles

@@ -1,0 +1,3 @@
+-- LEGACY REFERENCE ONLY. DO NOT RUN AGAINST SUPABASE.
+-- Intentionally empty. The Early Access schema is defined by the canonical
+-- migrations in supabase/migrations/. See database/migrations/README.md.

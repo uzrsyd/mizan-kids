@@ -1,36 +1,43 @@
 "use client";
 
-import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { useMemo, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  childAgeOptions as ageOptions,
+  learningInterestOptions as interestOptions,
+  maxChildren,
+  referralSourceOptions as acquisitionOptions,
+} from "@/features/early-access/options";
 
-const ageOptions = ["4–5", "6–7", "8–9", "10–12"];
-const interestOptions = [
-  "Quran",
-  "Arabic",
-  "Salah",
-  "Islamic Studies",
-  "Duas",
-  "Seerah",
-  "Akhlaq / Character",
-  "Prophets",
-];
-const acquisitionOptions = [
-  "Instagram",
-  "Facebook",
-  "TikTok",
-  "Google",
-  "Friend or family",
-  "Other",
-];
+const childCountOptions = Array.from({ length: maxChildren }, (_, index) => index + 1);
 
 export function EarlyAccessForm() {
-  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
+  const router = useRouter();
+  const [status, setStatus] = useState<"idle" | "loading" | "error" | "success">("idle");
   const [message, setMessage] = useState("");
   const [childCount, setChildCount] = useState(1);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
   const [ageByChild, setAgeByChild] = useState<Record<number, string>>({ 1: ageOptions[0] });
+
+  const utmValues = useMemo(() => {
+    if (typeof window === "undefined") {
+      return {} as Record<string, string>;
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    return {
+      utm_source: params.get("utm_source") ?? "",
+      utm_medium: params.get("utm_medium") ?? "",
+      utm_campaign: params.get("utm_campaign") ?? "",
+      utm_content: params.get("utm_content") ?? "",
+      utm_term: params.get("utm_term") ?? "",
+      referrer_url: document.referrer || "",
+      landing_path: window.location.pathname,
+    };
+  }, []);
 
   const childAges = Array.from({ length: childCount }, (_, index) => index + 1);
 
@@ -57,11 +64,18 @@ export function EarlyAccessForm() {
     setMessage("");
 
     const formData = new FormData(event.currentTarget);
-    const firstName = String(formData.get("firstName") || "").trim();
+    const parentFirstName = String(formData.get("parentFirstName") || "").trim();
     const email = String(formData.get("email") || "").trim();
-    const acquisitionSource = String(formData.get("acquisitionSource") || "");
+    const referralSource = String(formData.get("referralSource") || "").trim();
+    const honeypot = String(formData.get("website") || "").trim();
 
-    if (!firstName) {
+    if (honeypot) {
+      setStatus("error");
+      setMessage("Request rejected.");
+      return;
+    }
+
+    if (!parentFirstName) {
       setStatus("error");
       setMessage("Please add your first name.");
       return;
@@ -86,12 +100,19 @@ export function EarlyAccessForm() {
     }
 
     const payload = {
-      firstName,
+      parentFirstName,
       email,
       numberOfChildren: childCount,
       childAgeRanges: childAges.map((index) => ageByChild[index]),
       learningInterests: selectedInterests,
-      acquisitionSource,
+      referralSource: referralSource || undefined,
+      utm_source: utmValues.utm_source || undefined,
+      utm_medium: utmValues.utm_medium || undefined,
+      utm_campaign: utmValues.utm_campaign || undefined,
+      utm_content: utmValues.utm_content || undefined,
+      utm_term: utmValues.utm_term || undefined,
+      referrer_url: utmValues.referrer_url || undefined,
+      landing_path: utmValues.landing_path || undefined,
     };
 
     try {
@@ -101,24 +122,26 @@ export function EarlyAccessForm() {
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json().catch(() => ({ message: "" }));
+      const result = await response.json().catch(() => ({ status: "server_error", message: "Something went wrong. Please try again." }));
 
-      if (!response.ok) {
+      if (result.status === "success") {
+        setStatus("success");
+        router.push("/welcome?status=success");
+        return;
+      }
+
+      if (result.status === "already_registered") {
         setStatus("error");
-        setMessage(
-          result.message ||
-            "This Early Access form is currently in frontend preview mode. The backend is intentionally not connected yet.",
-        );
+        setMessage(result.message || "You’re already on the Mizan Kids Early Access list.");
+        router.push("/welcome?status=already_registered");
         return;
       }
 
       setStatus("error");
-      setMessage(
-        "This Early Access form is currently in frontend preview mode. The backend is intentionally not connected yet.",
-      );
+      setMessage(result.message || "Something went wrong. Please try again.");
     } catch {
       setStatus("error");
-      setMessage("This Early Access form is currently in frontend preview mode. The backend is intentionally not connected yet.");
+      setMessage("Something went wrong. Please try again.");
     }
   }
 
@@ -129,7 +152,7 @@ export function EarlyAccessForm() {
           <label className="block text-sm font-medium text-[#173E39]">
             Parent first name
             <input
-              name="firstName"
+              name="parentFirstName"
               className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
               placeholder="Your name"
             />
@@ -154,11 +177,11 @@ export function EarlyAccessForm() {
               onChange={(event) => handleChildCountChange(Number(event.target.value))}
               className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
             >
-              <option value="1">1</option>
-              <option value="2">2</option>
-              <option value="3">3</option>
-              <option value="4">4</option>
-              <option value="5">5</option>
+              {childCountOptions.map((count) => (
+                <option key={count} value={count}>
+                  {count}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -219,7 +242,7 @@ export function EarlyAccessForm() {
         <label className="block text-sm font-medium text-[#173E39]">
           How did you hear about Mizan Kids?
           <select
-            name="acquisitionSource"
+            name="referralSource"
             className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
             defaultValue=""
           >
@@ -231,6 +254,8 @@ export function EarlyAccessForm() {
             ))}
           </select>
         </label>
+
+        <input type="text" name="website" className="hidden" tabIndex={-1} autoComplete="off" />
 
         <div className="rounded-2xl bg-[#F7F1E7] p-3 text-sm text-[#38514d]">
           By joining Early Access, you’ll receive emails about your Mizan Kids Early Access spot, launch, and availability.

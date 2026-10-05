@@ -14,16 +14,29 @@ export const metadata: Metadata = {
   },
 };
 
-export default function WelcomePage() {
+export default async function WelcomePage({
+  searchParams,
+}: {
+  searchParams?: Promise<{ status?: string }> | { status?: string };
+}) {
+  const params = (await Promise.resolve(searchParams ?? {})) as { status?: string };
+  const isAlreadyRegistered = params.status === "already_registered";
+
   return (
     <Section>
       <Container className="max-w-3xl">
         <Card className="bg-white p-8 sm:p-10">
           <div className="space-y-6 text-center">
-            <Badge>You’re on the list</Badge>
+            <Badge>{isAlreadyRegistered ? "Already on the list" : "You’re on the list"}</Badge>
             <div className="space-y-3">
-              <h1 className="text-4xl font-black text-[#173E39] sm:text-5xl">You’re on the list!</h1>
-              <p className="text-xl text-[#38514d]">Thanks for joining Mizan Kids Early Access.</p>
+              <h1 className="text-4xl font-black text-[#173E39] sm:text-5xl">
+                {isAlreadyRegistered ? "You’re already on the list" : "You’re on the list!"}
+              </h1>
+              <p className="text-xl text-[#38514d]">
+                {isAlreadyRegistered
+                  ? "You’re already on the Mizan Kids Early Access list."
+                  : "Thanks for joining Mizan Kids Early Access."}
+              </p>
             </div>
 
             <div className="rounded-[24px] bg-[#F7F1E7] p-5 text-left">
