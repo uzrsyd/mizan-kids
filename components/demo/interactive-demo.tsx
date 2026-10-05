@@ -762,49 +762,65 @@ export function InteractiveDemo() {
           </div>
 
           <div className="space-y-8">
-            {lessonGroups.map((group) => (
-              <div key={group.id} className="space-y-4">
-                <div className="space-y-2">
-                  <p className="text-xs font-black uppercase tracking-[0.18em] text-[#5D6E6A]">{group.title}</p>
-                  <p className="text-lg font-semibold text-[#173E39]">{group.subtitle}</p>
-                  <p className="text-sm text-[#38514d]">{group.description}</p>
-                </div>
+            {lessonGroups.map((group) => {
+              const isEarly = group.id === "early-learners";
+              return (
+                <div
+                  key={group.id}
+                  className={`rounded-[28px] border p-4 sm:p-6 md:p-8 ${
+                    isEarly
+                      ? "border-[#E9DFC7] bg-[#FFF8E9]"
+                      : "border-[#CCDFD7] bg-[#F1F8F5]"
+                  }`}
+                >
+                  <div className="mb-5 space-y-3">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <p className="text-xs font-black uppercase tracking-[0.18em] text-[#5D6E6A]">{group.title}</p>
+                      <span className={`inline-flex items-center rounded-full px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ${
+                        isEarly ? "bg-[#F7EED2] text-[#6C5A2B]" : "bg-[#DCEDE4] text-[#214A47]"
+                      }`}>
+                        {group.subtitle}
+                      </span>
+                    </div>
+                    <p className="text-sm text-[#38514d]">{group.description}</p>
+                  </div>
 
-                <div className="grid gap-4 md:grid-cols-3">
-                  {group.lessons.map((lesson, index) => {
-                    const completed = completedLessons.includes(lesson.id);
-                    return (
-                      <div key={lesson.id} className="flex h-full flex-col rounded-[24px] border border-[#E7DCC7] bg-[#FFFDFB] p-5 shadow-[0_10px_22px_rgba(23,62,57,0.03)]">
-                        <div className="mb-4 flex items-center justify-between gap-3">
-                          <p className="text-xs uppercase tracking-[0.18em] text-[#5D6E6A]">Lesson {index + 1}</p>
-                          {completed ? (
-                            <span className="rounded-full bg-[#EAF4F2] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#173E39]">✓ Completed</span>
-                          ) : null}
-                        </div>
-
-                        <div className="mb-4">{renderLessonIllustration(lesson.id)}</div>
-
-                        <div className="flex-1">
-                          <h3 className="text-2xl font-black text-[#173E39]">{lesson.title}</h3>
-                          <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5D6E6A]">
-                            <span>{lesson.age}</span>
-                            <span>•</span>
-                            <span>5 quick questions</span>
-                            <span>•</span>
-                            <span>About 3 min</span>
+                  <div className="grid gap-4 md:grid-cols-3">
+                    {group.lessons.map((lesson, index) => {
+                      const completed = completedLessons.includes(lesson.id);
+                      return (
+                        <div key={lesson.id} className="flex h-full flex-col rounded-[24px] border border-[#E7DCC7] bg-[#FFFDFB] p-5 shadow-[0_10px_22px_rgba(23,62,57,0.03)]">
+                          <div className="mb-4 flex items-center justify-between gap-3">
+                            <p className="text-xs uppercase tracking-[0.18em] text-[#5D6E6A]">Lesson {index + 1}</p>
+                            {completed ? (
+                              <span className="rounded-full bg-[#EAF4F2] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#173E39]">✓ Completed</span>
+                            ) : null}
                           </div>
-                          <p className="mt-4 text-sm leading-6 text-[#38514d]">{lesson.summary}</p>
-                        </div>
 
-                        <Button type="button" className="mt-6 w-full" onClick={() => startLesson(allLessons.findIndex((item) => item.id === lesson.id))}>
-                          {completed ? "Review Lesson" : "Start Lesson"}
-                        </Button>
-                      </div>
-                    );
-                  })}
+                          <div className="mb-4">{renderLessonIllustration(lesson.id)}</div>
+
+                          <div className="flex-1">
+                            <h3 className="text-2xl font-black text-[#173E39]">{lesson.title}</h3>
+                            <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5D6E6A]">
+                              <span>{lesson.age}</span>
+                              <span>•</span>
+                              <span>5 quick questions</span>
+                              <span>•</span>
+                              <span>About 3 min</span>
+                            </div>
+                            <p className="mt-4 text-sm leading-6 text-[#38514d]">{lesson.summary}</p>
+                          </div>
+
+                          <Button type="button" className="mt-6 w-full" onClick={() => startLesson(allLessons.findIndex((item) => item.id === lesson.id))}>
+                            {completed ? "Review Lesson" : "Start Lesson"}
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </Card>

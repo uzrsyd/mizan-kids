@@ -167,7 +167,7 @@ export function EarlyAccessForm() {
             <div className="grid gap-3 sm:grid-cols-2">
               {childAges.map((index) => (
                 <label key={index} className="block text-xs font-medium text-[#173E39]">
-                  {childCount === 1 ? "Child’s age" : `Child ${index}`}
+                  {childCount === 1 ? null : `Child ${index}`}
                   <select
                     name={`childAge_${index}`}
                     value={ageByChild[index] ?? ageOptions[0]}

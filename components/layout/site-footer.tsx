@@ -15,9 +15,14 @@ export function SiteFooter() {
         </div>
 
         <div className="flex flex-col gap-3 text-sm text-[#3B4E4A] sm:flex-row sm:gap-8">
-          <Link href="/privacy" className="transition hover:text-[#173E39]">Privacy</Link>
-          <Link href="/terms" className="transition hover:text-[#173E39]">Terms</Link>
-          <a href={`mailto:${brand.email}`} className="transition hover:text-[#173E39]">{brand.email}</a>
+          <Link href="/privacy" className="transition hover:text-[#173E39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#173E39] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F1EB]">Privacy</Link>
+          <Link href="/terms" className="transition hover:text-[#173E39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#173E39] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F1EB]">Terms</Link>
+          <a
+            href={`mailto:${brand.email}`}
+            className="transition hover:text-[#173E39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#173E39] focus-visible:ring-offset-2 focus-visible:ring-offset-[#F5F1EB]"
+          >
+            {brand.email}
+          </a>
         </div>
       </Container>
 
