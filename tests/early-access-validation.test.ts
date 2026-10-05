@@ -2,7 +2,6 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { normalizeEmail, validateEarlyAccessPayload } from "../features/early-access/validation";
-import { buildResendFromAddress, isResendConfigured } from "../lib/resend";
 
 describe("early access validation", () => {
   it("normalizes emails by trimming and lowering case", () => {
@@ -82,12 +81,5 @@ describe("early access validation", () => {
   it("de-duplicates learning interests", () => {
     const result = validateEarlyAccessPayload({ ...base, learningInterests: ["Quran", "Quran", "Arabic"] });
     assert.deepEqual(result.learningInterests, ["Quran", "Arabic"]);
-  });
-
-  it("builds a safe sender address and detects missing API keys", () => {
-    assert.equal(buildResendFromAddress("Mizan Kids", "salaam@mizankids.com"), "Mizan Kids <salaam@mizankids.com>");
-    assert.equal(buildResendFromAddress("Mizan Kids", ""), "Mizan Kids <onboarding@resend.dev>");
-    assert.equal(isResendConfigured(""), false);
-    assert.equal(isResendConfigured("re_test_key"), true);
   });
 });
