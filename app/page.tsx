@@ -6,7 +6,6 @@ import {
   faBookQuran,
   faHandsPraying,
   faHeart,
-  faLanguage,
   faMosque,
   faRoute,
   faStarAndCrescent,
@@ -170,37 +169,37 @@ export default function Home() {
             </ul>
           </div>
 
-          <Card className="overflow-hidden border-[#E7DCC7] bg-[#173E39] text-white">
+          <Card className="overflow-hidden border-[#E7DCC7] bg-[#F7F1E7] text-[#173E39]">
             <div className="space-y-5">
-              <span className="text-sm uppercase tracking-[0.18em] text-[#E7E8DA]">Example progress</span>
+              <span className="text-sm uppercase tracking-[0.18em] text-[#38514d]">Example progress</span>
 
               <div className="space-y-5">
                 <div>
-                  <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#F5F6F2]">
+                  <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#173E39]">
                     <span>Quran</span>
-                    <span className="text-base font-bold">Strong · 82%</span>
+                    <span className="text-base font-bold text-[#173E39]">Strong · 82%</span>
                   </div>
-                  <div className="h-2.5 rounded-full bg-white/20">
+                  <div className="h-2.5 rounded-full bg-[#E6DCC9]">
                     <div className="h-2.5 w-[82%] rounded-full bg-[#F4B342]" />
                   </div>
                 </div>
 
                 <div>
-                  <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#F5F6F2]">
+                  <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#173E39]">
                     <span>Salah</span>
-                    <span className="text-base font-bold">Keep practicing · 68%</span>
+                    <span className="text-base font-bold text-[#173E39]">Keep practicing · 68%</span>
                   </div>
-                  <div className="h-2.5 rounded-full bg-white/20">
+                  <div className="h-2.5 rounded-full bg-[#E6DCC9]">
                     <div className="h-2.5 w-[68%] rounded-full bg-[#6BA9A4]" />
                   </div>
                 </div>
 
                 <div>
-                  <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#F5F6F2]">
+                  <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#173E39]">
                     <span>Akhlaq</span>
-                    <span className="text-base font-bold">Excellent · 91%</span>
+                    <span className="text-base font-bold text-[#173E39]">Excellent · 91%</span>
                   </div>
-                  <div className="h-2.5 rounded-full bg-white/20">
+                  <div className="h-2.5 rounded-full bg-[#E6DCC9]">
                     <div className="h-2.5 w-[91%] rounded-full bg-[#E88C54]" />
                   </div>
                 </div>
@@ -290,7 +289,6 @@ export default function Home() {
 function SubjectIllustration({ id }: { id: string }) {
   const iconMap: Record<string, IconDefinition> = {
     quran: faBookQuran,
-    arabic: faLanguage,
     salah: faMosque,
     aqeedah: faStarAndCrescent,
     duas: faHandsPraying,
@@ -298,6 +296,18 @@ function SubjectIllustration({ id }: { id: string }) {
     seerah: faRoute,
     akhlaq: faHeart,
   };
+
+  if (id === "arabic") {
+    return (
+      <span
+        aria-label="Arabic learning"
+        className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-[8px] bg-[#E8F0EA] text-[19px] font-black leading-none text-[#173E39]"
+        style={{ fontFamily: '"Noto Naskh Arabic", "Segoe UI", serif' }}
+      >
+        أ ب ت
+      </span>
+    );
+  }
 
   const icon = iconMap[id];
   if (!icon) return null;

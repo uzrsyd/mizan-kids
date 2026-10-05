@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faHeart, faLanguage, faMosque, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faMosque, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -308,13 +308,27 @@ export function InteractiveDemo() {
 
   function renderLessonIllustration(lessonId: string) {
     const base = "h-16 w-full rounded-[20px] border border-[#E7DCC7] bg-[#F7F1E7] p-3";
-    const iconMap: Record<string, { icon: IconDefinition; className: string }> = {
+    const iconMap: Record<string, { icon: IconDefinition; className: string } | null> = {
       "salah-basics": { icon: faMosque, className: "text-[#173E39]" },
-      "arabic-letters": { icon: faLanguage, className: "text-[#173E39]" },
+      "arabic-letters": null,
       "good-character": { icon: faHeart, className: "text-[#173E39]" },
     };
 
     const lessonIcon = iconMap[lessonId];
+    if (lessonId === "arabic-letters") {
+      return (
+        <div className={`${base} flex items-center justify-center`}>
+          <span
+            aria-label="Arabic learning"
+            className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#E8F0EA] text-[26px] font-black leading-none text-[#173E39]"
+            style={{ fontFamily: '"Noto Naskh Arabic", "Segoe UI", serif' }}
+          >
+            أ ب ت
+          </span>
+        </div>
+      );
+    }
+
     if (!lessonIcon) return null;
 
     return (

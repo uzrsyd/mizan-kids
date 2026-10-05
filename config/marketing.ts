@@ -11,7 +11,7 @@ export const subjectCards = [
     title: "Arabic",
     description: "Recognize letters, build vocabulary, and grow in everyday Arabic understanding.",
     accent: "bg-[#F6EDDC] text-[#173E39]",
-    icon: "faLanguage",
+    icon: "arabic-mark",
   },
   {
     id: "salah",
