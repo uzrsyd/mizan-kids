@@ -491,6 +491,7 @@ export function InteractiveDemo() {
   const [feedback, setFeedback] = useState<string | null>(null);
   const [explanation, setExplanation] = useState<string | null>(null);
   const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
+  const [sourceNotesOpen, setSourceNotesOpen] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
   const [lastSuccessIndex, setLastSuccessIndex] = useState<number | null>(null);
   const [completedLessons, setCompletedLessons] = useState<string[]>(() => {
@@ -545,6 +546,17 @@ export function InteractiveDemo() {
     setFeedback(null);
     setExplanation(null);
     setIsAnswerCorrect(null);
+    setSourceNotesOpen(false);
+  }
+
+  function resetForNewAttempt() {
+    if (submitted && isAnswerCorrect === false) {
+      setSubmitted(false);
+      setFeedback(null);
+      setExplanation(null);
+      setIsAnswerCorrect(null);
+      setSourceNotesOpen(false);
+    }
   }
 
   function clearOrder() {
@@ -582,8 +594,10 @@ export function InteractiveDemo() {
       setLastSuccessIndex(nextIndex);
       setFeedback(successPhrases[nextIndex]);
       setCorrectCount((count) => count + 1);
+      setSourceNotesOpen(false);
     } else {
-      setFeedback("Let’s try that one again.");
+      setFeedback("Not quite.");
+      setSourceNotesOpen(true);
     }
 
     setExplanation(activeQuestion.explanation);
@@ -667,7 +681,7 @@ export function InteractiveDemo() {
                   key={option}
                   type="button"
                   onClick={() => {
-                    if (submitted) return;
+                    resetForNewAttempt();
                     const nextOrder = selectedOrder.includes(option)
                       ? selectedOrder.filter((item) => item !== option)
                       : [...selectedOrder, option];
@@ -675,7 +689,9 @@ export function InteractiveDemo() {
                   }}
                   className={`relative min-h-[72px] rounded-2xl border px-4 py-3 text-left text-lg font-bold transition ${
                     selectedIndex >= 0
-                      ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
+                      ? submitted && isAnswerCorrect === false
+                        ? "border-[#B8B0A4] bg-[#F0EEE9] text-[#5D6E6A]"
+                        : "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
                       : "border-[#D8D0C1] bg-[#F8F5F0] text-[#173E39] hover:border-[#173E39] hover:bg-[#F2F7F5]"
                   }`}
                 >
@@ -703,12 +719,14 @@ export function InteractiveDemo() {
               key={option}
               type="button"
               onClick={() => {
-                if (submitted) return;
+                resetForNewAttempt();
                 setSelectedChoice(option);
               }}
               className={`min-h-[82px] rounded-2xl border px-4 py-3 text-center text-3xl font-black transition ${
                 selectedChoice === option
-                  ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
+                  ? submitted && isAnswerCorrect === false
+                    ? "border-[#B8B0A4] bg-[#F0EEE9] text-[#5D6E6A]"
+                    : "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
                   : "border-[#D8D0C1] bg-[#F8F5F0] text-[#173E39] hover:border-[#173E39]"
               }`}
             >
@@ -726,12 +744,14 @@ export function InteractiveDemo() {
             key={option}
             type="button"
             onClick={() => {
-              if (submitted) return;
+              resetForNewAttempt();
               setSelectedChoice(option);
             }}
             className={`rounded-2xl border px-4 py-4 text-left text-base font-medium leading-6 transition ${
               selectedChoice === option
-                ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
+                ? submitted && isAnswerCorrect === false
+                  ? "border-[#B8B0A4] bg-[#F0EEE9] text-[#5D6E6A]"
+                  : "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
                 : "border-[#D8D0C1] bg-[#F8F5F0] text-[#173E39] hover:border-[#173E39]"
             }`}
           >
@@ -924,17 +944,21 @@ export function InteractiveDemo() {
         {renderQuestion()}
 
         {submitted ? (
-          <div className="rounded-2xl border border-[#D8D0C1] bg-[#F7F1E7] p-4 text-sm text-[#38514d]">
+          <div className={`rounded-2xl border p-4 text-sm text-[#38514d] ${isAnswerCorrect ? "border-[#D8D0C1] bg-[#F7F1E7]" : "border-[#E7C7B8] bg-[#FFF3EC]"}`}>
             <p className="text-lg font-black text-[#173E39]">{feedback}</p>
             <p className="mt-2 leading-6">{explanation}</p>
-            {activeQuestion.sourceNote ? <div className="mt-4"><SourcesLessonNotes note={activeQuestion.sourceNote} /></div> : null}
+            {activeQuestion.sourceNote ? (
+              <div className="mt-4">
+                <SourcesLessonNotes note={activeQuestion.sourceNote} open={sourceNotesOpen} />
+              </div>
+            ) : null}
           </div>
         ) : null}
 
         {!submitted ? (
           activeQuestion.sourceNote ? (
             <div className="pt-2">
-              <SourcesLessonNotes note={activeQuestion.sourceNote} />
+              <SourcesLessonNotes note={activeQuestion.sourceNote} open={false} />
             </div>
           ) : null
         ) : null}
@@ -948,11 +972,7 @@ export function InteractiveDemo() {
             <Button type="button" onClick={advanceQuestion} className="w-full sm:w-auto">
               {isLastQuestion ? "See results" : "Next Question"}
             </Button>
-          ) : (
-            <Button type="button" onClick={() => resetQuestionState()} className="w-full sm:w-auto">
-              Try Again
-            </Button>
-          )}
+          ) : null}
 
           {activeQuestion.type === "tap-rank" ? (
             <Button type="button" variant="ghost" onClick={clearOrder} disabled={selectedOrder.length === 0} className="w-full sm:w-auto">

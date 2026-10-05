@@ -7,7 +7,7 @@ type SourceNote = {
   madhhabSensitivity?: string;
 };
 
-export function SourcesLessonNotes({ note }: { note?: SourceNote }) {
+export function SourcesLessonNotes({ note, open = false }: { note?: SourceNote; open?: boolean }) {
   if (!note) return null;
 
   const fields: Array<{ label: string; value?: string }> = [
@@ -22,7 +22,7 @@ export function SourcesLessonNotes({ note }: { note?: SourceNote }) {
   if (fields.length === 0) return null;
 
   return (
-    <details className="group rounded-2xl border border-[#D8D0C1] bg-[#F7F1E7] p-3 text-left text-[#173E39]">
+    <details open={open} className="group rounded-2xl border border-[#D8D0C1] bg-[#F7F1E7] p-3 text-left text-[#173E39]">
       <summary className="flex cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold uppercase tracking-[0.14em] text-[#173E39]">
         <span>Sources &amp; lesson notes</span>
         <span className="text-lg transition group-open:rotate-180">▾</span>
