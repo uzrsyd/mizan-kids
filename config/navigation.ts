@@ -2,6 +2,7 @@ export const navigation = [
   { label: "How It Works", href: "/#how-it-works" },
   { label: "Subjects", href: "/#subjects" },
   { label: "For Parents", href: "/#for-parents" },
+  { label: "Pricing", href: "/pricing" },
   { label: "FAQ", href: "/#faq" },
 ];
 

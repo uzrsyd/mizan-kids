@@ -44,19 +44,60 @@ const learningSteps = [
   },
 ];
 
+const trustItems = [
+  {
+    title: "REVIEWED BEFORE PUBLICATION",
+    text: "Lessons go through content and Islamic review before they are released.",
+  },
+  {
+    title: "SOURCE-BACKED LEARNING",
+    text: "Quran, authentic Hadith, and other reliable Islamic references are used where relevant.",
+  },
+  {
+    title: "EXTRA CARE WITH SENSITIVE TOPICS",
+    text: "Fiqh differences, Aqeedah, Seerah, Hadith, and other sensitive material receive additional review before publication.",
+  },
+  {
+    title: "NO ADS",
+    text: "Children learn in a focused environment without advertising or distracting feeds.",
+  },
+  {
+    title: "PARENT-MANAGED",
+    text: "Children learn through learner profiles under a parent or guardian account. No child email required.",
+  },
+];
+
 export default function Home() {
   return (
     <>
       <Section className="bg-[radial-gradient(circle_at_top_left,_rgba(244,179,66,0.14),_transparent_28%),_#F7F1E7] py-12 sm:py-16 lg:py-20">
-        <Container className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16">
-          <div className="space-y-8">
+        <Container className="grid items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-16">
+          <div className="space-y-7">
             <Badge>Early access for December 2026 launch</Badge>
+
             <div className="space-y-5">
               <h1 className="max-w-xl text-4xl font-black text-[#173E39] sm:text-5xl lg:text-6xl">
                 Islamic learning that grows with your child.
               </h1>
-              <p className="max-w-xl text-lg text-[#38514d]">
-                Ages 4–12 • Short interactive lessons • Progress parents can see
+
+              <div className="flex flex-col gap-3 sm:grid sm:grid-cols-3 sm:gap-3">
+                {[
+                  "Ages 4–12",
+                  "Short interactive lessons",
+                  "Progress parents can see",
+                ].map((value) => (
+                  <div
+                    key={value}
+                    className="flex items-center gap-2 rounded-full border border-[#E3D8C5] bg-white/70 px-3 py-2 text-sm font-semibold text-[#173E39]"
+                  >
+                    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#EAF4F2] text-[11px] text-[#173E39]">✓</span>
+                    <span>{value}</span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="text-sm italic text-[#4D6662]">
+                Source-backed Islamic learning · No ads · Parent-managed
               </p>
             </div>
 
@@ -148,19 +189,50 @@ export default function Home() {
             ))}
           </div>
 
-          <p className="mt-6 text-center text-sm text-[#5D6E6A]">
-            More learning areas will be added as Mizan Kids grows.
-          </p>
+          <div className="mt-8 text-center">
+            <p className="text-xl font-black text-[#173E39]">
+              A growing curriculum across the essentials of Islamic learning.
+            </p>
+            <p className="mt-3 text-base text-[#4D6662]">
+              Clear learning objectives, reviewed content, and source references where appropriate.
+            </p>
+          </div>
         </Container>
       </Section>
 
-      <Section id="for-parents" className="bg-[#F5F1EB] py-12 sm:py-16">
+      <Section className="bg-[#F5F1EB] py-12 sm:py-16">
+        <Container>
+          <div className="mb-8 space-y-3 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#5D6E6A]">Built with care</p>
+            <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">
+              Islamic learning parents can trust.
+            </h2>
+            <p className="mx-auto max-w-3xl text-base text-[#38514d]">
+              Mizan Kids is being built to make Islamic learning clear, age-appropriate, and grounded in reliable sources — while giving parents confidence in what their children are learning.
+            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+            {trustItems.map((item) => (
+              <div key={item.title} className="rounded-[24px] border border-[#E7DCC7] bg-white p-4">
+                <p className="text-[11px] font-black uppercase tracking-[0.14em] text-[#5D6E6A]">{item.title}</p>
+                <p className="mt-3 text-sm leading-6 text-[#38514d]">{item.text}</p>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </Section>
+
+      <Section id="for-parents" className="bg-[#F7F1E7] py-12 sm:py-16">
         <Container className="grid items-center gap-10 lg:grid-cols-[1fr_1.1fr]">
           <div className="space-y-5">
             <Badge>For parents</Badge>
             <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">Parents are not left guessing.</h2>
             <p className="text-lg text-[#38514d]">
               Islamic learning can feel scattered. Random videos and disconnected worksheets do not show what a child truly knows or what they are ready to practice next.
+            </p>
+            <p className="text-base text-[#38514d]">
+              See not only what your child is learning, but where that learning comes from.
             </p>
             <ul className="space-y-3 text-[#38514d]">
               <li>• Clear skill progression and structured learning paths</li>
@@ -171,7 +243,7 @@ export default function Home() {
 
           <Card className="overflow-hidden border-[#E7DCC7] bg-[#F7F1E7] text-[#173E39]">
             <div className="space-y-5">
-              <span className="text-sm uppercase tracking-[0.18em] text-[#38514d]">Example progress</span>
+              <span className="text-sm uppercase tracking-[0.18em] text-[#38514d]">EXAMPLE PROGRESS</span>
 
               <div className="space-y-5">
                 <div>
@@ -209,29 +281,16 @@ export default function Home() {
         </Container>
       </Section>
 
-      <Section className="bg-[#F7F1E7] py-12 sm:py-16">
-        <Container className="grid items-center gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="overflow-hidden rounded-[28px] border border-[#E3D8C5] bg-white p-3 shadow-[0_18px_45px_rgba(23,62,57,0.06)]">
-            <Image
-              src="/brand/og-early-access.png"
-              alt="Early Access preview"
-              width={900}
-              height={720}
-              className="rounded-[20px]"
-            />
+      <Section className="bg-[#F5F1EB] py-12 sm:py-16">
+        <Container className="rounded-[30px] border border-[#E3D8C5] bg-[#F8F5F0] p-6 sm:p-8">
+          <div className="mb-6 text-center">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#5D6E6A]">SIMPLE FAMILY PRICING</p>
+            <h2 className="mt-2 text-3xl font-black text-[#173E39] sm:text-4xl">One membership for your whole family.</h2>
+            <p className="mt-3 text-base text-[#38514d]">$9.99 / month or $79.99 / year • All children in your household included.</p>
           </div>
-          <div className="space-y-6">
-            <Badge>Real interactive preview</Badge>
-            <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">Try a real Mizan Kids lesson.</h2>
-            <p className="text-lg text-[#38514d]">
-              See how children practice Islamic knowledge through short questions, immediate feedback, and encouraging explanations.
-            </p>
-            <div className="flex flex-col gap-4 sm:flex-row">
-              <Button href="/demo">Try a Free Lesson</Button>
-              <Button href="/#early-access" variant="ghost">
-                Join Early Access
-              </Button>
-            </div>
+          <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
+            <Button href="/pricing">See Pricing</Button>
+            <Button href="/#early-access" variant="ghost">Join Early Access</Button>
           </div>
         </Container>
       </Section>

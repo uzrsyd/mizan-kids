@@ -74,6 +74,21 @@ export const faqs = [
       "Children can practice across Quran, Arabic, Salah, Duas, Aqeedah, Seerah, Akhlaq, Prophets, and other age-appropriate Islamic learning areas in a clear and encouraging progression.",
   },
   {
+    question: "How is Islamic content reviewed?",
+    answer:
+      "Mizan Kids uses a structured content and Islamic review process before lessons are published. Source-based and sensitive topics receive additional review, and material can be flagged for scholar review where appropriate.",
+  },
+  {
+    question: "Where does Mizan Kids get its Islamic information?",
+    answer:
+      "Lessons are designed around reliable Islamic sources, including the Quran and authentic Hadith where relevant. Source references can be attached to lessons so parents can understand the basis for what their child is learning.",
+  },
+  {
+    question: "Does Mizan Kids replace a Quran teacher or Islamic school?",
+    answer:
+      "No. Mizan Kids is designed to support structured Islamic practice and learning at home. It is not intended to replace parents, Quran teachers, Islamic schools, or qualified religious instruction.",
+  },
+  {
     question: "Do I need an account to join Early Access?",
     answer:
       "No. You can join Early Access with your name and email to reserve your place without creating an account or adding payment information yet.",
@@ -107,15 +122,5 @@ export const faqs = [
     question: "Will I be able to see my child’s progress?",
     answer:
       "Yes. A core part of the experience is helping parents understand what a child knows, what they are practicing, and what comes next in a clear and encouraging way.",
-  },
-  {
-    question: "How is Islamic content reviewed?",
-    answer:
-      "Mizan Kids is being designed with a structured review process to keep the content age-appropriate, clear, and rooted in sound Islamic understanding.",
-  },
-  {
-    question: "Does Mizan Kids replace a Quran teacher or Islamic school?",
-    answer:
-      "No. Mizan Kids is designed to support learning at home and complement a child’s broader Islamic education and guidance from trusted teachers and family.",
   },
 ];

@@ -40,6 +40,17 @@ export function EarlyAccessForm() {
     );
   }
 
+  function handleChildCountChange(nextCount: number) {
+    setChildCount(nextCount);
+    setAgeByChild((current) => {
+      const next: Record<number, string> = {};
+      for (let index = 1; index <= nextCount; index += 1) {
+        next[index] = current[index] ?? ageOptions[0];
+      }
+      return next;
+    });
+  }
+
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setStatus("loading");
@@ -140,7 +151,7 @@ export function EarlyAccessForm() {
             <select
               name="numberOfChildren"
               value={childCount}
-              onChange={(event) => setChildCount(Number(event.target.value))}
+              onChange={(event) => handleChildCountChange(Number(event.target.value))}
               className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
             >
               <option value="1">1</option>
@@ -151,12 +162,12 @@ export function EarlyAccessForm() {
             </select>
           </label>
 
-          <div className="space-y-2">
-            <p className="text-sm font-medium text-[#173E39]">Child age ranges</p>
-            <div className="grid gap-2 sm:grid-cols-2">
+          <div className="space-y-3">
+            <p className="text-sm font-medium text-[#173E39]">{childCount === 1 ? "Child’s age" : "Children’s ages"}</p>
+            <div className="grid gap-3 sm:grid-cols-2">
               {childAges.map((index) => (
                 <label key={index} className="block text-xs font-medium text-[#173E39]">
-                  Child {index} age
+                  {childCount === 1 ? "Child’s age" : `Child ${index}`}
                   <select
                     name={`childAge_${index}`}
                     value={ageByChild[index] ?? ageOptions[0]}

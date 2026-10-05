@@ -17,6 +17,7 @@ export function SiteHeader() {
     function handleKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         setOpen(false);
+        document.body.style.overflow = "";
       }
     }
 
@@ -24,6 +25,7 @@ export function SiteHeader() {
       if (!menuRef.current) return;
       if (!menuRef.current.contains(event.target as Node)) {
         setOpen(false);
+        document.body.style.overflow = "";
       }
     }
 
@@ -33,20 +35,33 @@ export function SiteHeader() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("mousedown", handlePointerDown);
+      document.body.style.overflow = "";
     };
   }, []);
 
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  function closeMenu() {
+    setOpen(false);
+    document.body.style.overflow = "";
+  }
+
   return (
     <header className="sticky top-0 z-50 border-b border-[#E7DFD2] bg-[#F8F5F0]/90 backdrop-blur-sm">
-      <Container className="flex items-center justify-between py-3">
-        <Link href="/" className="flex items-center gap-3" aria-label={brand.name}>
+      <Container className="flex items-center justify-between py-2 md:py-3">
+        <Link href="/" className="flex items-center gap-3" aria-label={brand.name} onClick={closeMenu}>
           <Image
             src="/brand/logo-wordmark-transparent.png"
             alt={brand.name}
             width={160}
             height={42}
             priority
-            className="h-auto w-[150px] md:w-[160px]"
+            className="h-auto w-[120px] md:w-[150px]"
           />
         </Link>
 
@@ -77,26 +92,34 @@ export function SiteHeader() {
       </Container>
 
       {open ? (
-        <div ref={menuRef} className="border-t border-[#E7DFD2] bg-[#F8F5F0] md:hidden">
-          <Container className="flex flex-col gap-3 py-4">
-            {navigation.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className="rounded-xl px-2 py-2 text-base font-medium text-[#173E39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#173E39]"
-                onClick={() => setOpen(false)}
-              >
-                {item.label}
-              </Link>
-            ))}
-            <Button href={cta.secondary.href} variant="ghost" className="w-full justify-center">
-              {cta.secondary.label}
-            </Button>
-            <Button href={cta.primary.href} className="w-full justify-center">
-              {cta.primary.label}
-            </Button>
-          </Container>
-        </div>
+        <>
+          <button
+            type="button"
+            aria-label="Close menu"
+            className="fixed inset-0 z-40 bg-[#173E39]/20 md:hidden"
+            onClick={closeMenu}
+          />
+          <div ref={menuRef} className="fixed inset-x-0 top-[56px] z-50 border-t border-[#E7DFD2] bg-[#F8F5F0] md:hidden">
+            <Container className="flex flex-col gap-3 py-4">
+              {navigation.map((item) => (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  className="rounded-xl px-2 py-2 text-base font-medium text-[#173E39] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#173E39]"
+                  onClick={closeMenu}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <Button href={cta.secondary.href} variant="ghost" className="w-full justify-center" onClick={closeMenu}>
+                {cta.secondary.label}
+              </Button>
+              <Button href={cta.primary.href} className="w-full justify-center" onClick={closeMenu}>
+                {cta.primary.label}
+              </Button>
+            </Container>
+          </div>
+        </>
       ) : null}
     </header>
   );
