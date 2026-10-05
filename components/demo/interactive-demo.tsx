@@ -320,10 +320,10 @@ export function InteractiveDemo() {
         <div className={`${base} flex items-center justify-center`}>
           <span
             aria-label="Arabic learning"
-            className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-[#E8F0EA] text-[26px] font-black leading-none text-[#173E39]"
+            className="flex h-12 w-12 items-center justify-center rounded-[12px] bg-[#E8F0EA] text-[34px] font-black leading-[1] text-[#173E39]"
             style={{ fontFamily: '"Noto Naskh Arabic", "Segoe UI", serif' }}
           >
-            أ ب ت
+            ب
           </span>
         </div>
       );

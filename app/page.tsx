@@ -301,10 +301,10 @@ function SubjectIllustration({ id }: { id: string }) {
     return (
       <span
         aria-label="Arabic learning"
-        className="flex h-6 w-6 items-center justify-center overflow-hidden rounded-[8px] bg-[#E8F0EA] text-[19px] font-black leading-none text-[#173E39]"
+        className="flex h-7 w-7 items-center justify-center overflow-hidden rounded-[9px] bg-[#E8F0EA] text-[30px] font-black leading-[1] text-[#173E39]"
         style={{ fontFamily: '"Noto Naskh Arabic", "Segoe UI", serif' }}
       >
-        أ ب ت
+        ب
       </span>
     );
   }
