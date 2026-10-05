@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
+
 import { Badge } from "@/components/ui/badge";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+
+export const metadata: Metadata = {
+  title: "Privacy | Mizan Kids",
+};
 
 export default function PrivacyPage() {
   return (
@@ -10,10 +16,10 @@ export default function PrivacyPage() {
           <Badge>Privacy</Badge>
           <h1 className="text-4xl font-black text-[#173E39]">Privacy Policy</h1>
           <p className="text-[#38514d]">
-            Mizan Kids is committed to collecting only the information needed to operate the product and improve the learning experience for families.
+            Mizan Kids is committed to collecting only the information needed to provide a warm, useful learning experience for families.
           </p>
           <p className="text-[#38514d]">
-            This page is a temporary public-facing placeholder while legal review is completed before launch.
+            This page is part of the public preview experience and will continue to be updated as launch details are finalized.
           </p>
         </div>
       </Container>

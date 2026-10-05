@@ -1,31 +1,35 @@
+import type { Metadata } from "next";
+
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 
+export const metadata: Metadata = {
+  title: "Parent app | Mizan Kids",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
 export default function AppPage() {
   return (
     <Section>
-      <Container className="max-w-5xl">
-        <div className="space-y-4">
-          <Badge>Parent app</Badge>
-          <h1 className="text-4xl font-black text-[#173E39] sm:text-5xl">Welcome back</h1>
-        </div>
-
-        <div className="mt-8 grid gap-5 md:grid-cols-3">
-          <Card className="bg-white">
-            <p className="text-sm uppercase tracking-[0.16em] text-[#5D6E6A]">Recommended skill</p>
-            <h2 className="mt-3 text-2xl font-black text-[#173E39]">Salah confidence</h2>
-          </Card>
-          <Card className="bg-white">
-            <p className="text-sm uppercase tracking-[0.16em] text-[#5D6E6A]">Subjects</p>
-            <h2 className="mt-3 text-2xl font-black text-[#173E39]">Coming soon</h2>
-          </Card>
-          <Card className="bg-white">
-            <p className="text-sm uppercase tracking-[0.16em] text-[#5D6E6A]">Progress</p>
-            <h2 className="mt-3 text-2xl font-black text-[#173E39]">Coming soon</h2>
-          </Card>
-        </div>
+      <Container className="max-w-3xl">
+        <Card className="bg-white p-8 sm:p-10">
+          <div className="space-y-5 text-center">
+            <Badge>Parent app</Badge>
+            <h1 className="text-4xl font-black text-[#173E39] sm:text-5xl">Let’s create your first learner profile.</h1>
+            <p className="text-lg text-[#38514d]">
+              This area is a future parent dashboard shell. No child profiles or saved progress are active in this preview.
+            </p>
+            <div className="flex justify-center">
+              <Button href="/demo">Try a Free Lesson</Button>
+            </div>
+          </div>
+        </Card>
       </Container>
     </Section>
   );

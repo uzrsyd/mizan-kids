@@ -26,10 +26,11 @@ const acquisitionOptions = [
 ];
 
 export function EarlyAccessForm() {
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [message, setMessage] = useState("");
   const [childCount, setChildCount] = useState(1);
   const [selectedInterests, setSelectedInterests] = useState<string[]>([]);
+  const [ageByChild, setAgeByChild] = useState<Record<number, string>>({ 1: ageOptions[0] });
 
   const childAges = Array.from({ length: childCount }, (_, index) => index + 1);
 
@@ -47,15 +48,37 @@ export function EarlyAccessForm() {
     const formData = new FormData(event.currentTarget);
     const firstName = String(formData.get("firstName") || "").trim();
     const email = String(formData.get("email") || "").trim();
-    const numberOfChildren = Number(formData.get("numberOfChildren") || 1);
-    const childAgeRanges = childAges.map((index) => String(formData.get(`childAge_${index}`) || ""));
     const acquisitionSource = String(formData.get("acquisitionSource") || "");
+
+    if (!firstName) {
+      setStatus("error");
+      setMessage("Please add your first name.");
+      return;
+    }
+
+    if (!email || !/\S+@\S+\.\S+/.test(email)) {
+      setStatus("error");
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+
+    if (childAges.some((index) => !ageByChild[index])) {
+      setStatus("error");
+      setMessage("Please select an age range for each child.");
+      return;
+    }
+
+    if (selectedInterests.length === 0) {
+      setStatus("error");
+      setMessage("Please choose at least one learning interest.");
+      return;
+    }
 
     const payload = {
       firstName,
       email,
-      numberOfChildren,
-      childAgeRanges,
+      numberOfChildren: childCount,
+      childAgeRanges: childAges.map((index) => ageByChild[index]),
       learningInterests: selectedInterests,
       acquisitionSource,
     };
@@ -67,32 +90,36 @@ export function EarlyAccessForm() {
         body: JSON.stringify(payload),
       });
 
-      const result = await response.json();
+      const result = await response.json().catch(() => ({ message: "" }));
 
       if (!response.ok) {
         setStatus("error");
-        setMessage(result.message || "Something went wrong. Please try again.");
+        setMessage(
+          result.message ||
+            "This Early Access form is currently in frontend preview mode. The backend is intentionally not connected yet.",
+        );
         return;
       }
 
-      setStatus("success");
-      setMessage(result.message || "You’re on the Mizan Kids Early Access list.");
+      setStatus("error");
+      setMessage(
+        "This Early Access form is currently in frontend preview mode. The backend is intentionally not connected yet.",
+      );
     } catch {
       setStatus("error");
-      setMessage("Something went wrong. Please try again.");
+      setMessage("This Early Access form is currently in frontend preview mode. The backend is intentionally not connected yet.");
     }
   }
 
   return (
     <Card className="bg-white p-6 sm:p-8">
-      <form onSubmit={handleSubmit} className="space-y-5">
+      <form onSubmit={handleSubmit} className="space-y-5" noValidate>
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block text-sm font-medium text-[#173E39]">
             Parent first name
             <input
               name="firstName"
-              required
-              className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none focus:border-[#173E39]"
+              className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
               placeholder="Your name"
             />
           </label>
@@ -101,8 +128,7 @@ export function EarlyAccessForm() {
             <input
               name="email"
               type="email"
-              required
-              className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none focus:border-[#173E39]"
+              className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
               placeholder="parent@example.com"
             />
           </label>
@@ -115,7 +141,7 @@ export function EarlyAccessForm() {
               name="numberOfChildren"
               value={childCount}
               onChange={(event) => setChildCount(Number(event.target.value))}
-              className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none focus:border-[#173E39]"
+              className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
             >
               <option value="1">1</option>
               <option value="2">2</option>
@@ -133,8 +159,14 @@ export function EarlyAccessForm() {
                   Child {index} age
                   <select
                     name={`childAge_${index}`}
-                    defaultValue={ageOptions[0]}
-                    className="mt-1 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-3 py-2.5 outline-none focus:border-[#173E39]"
+                    value={ageByChild[index] ?? ageOptions[0]}
+                    onChange={(event) =>
+                      setAgeByChild((current) => ({
+                        ...current,
+                        [index]: event.target.value,
+                      }))
+                    }
+                    className="mt-1 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-3 py-2.5 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
                   >
                     {ageOptions.map((option) => (
                       <option key={option} value={option}>
@@ -177,7 +209,7 @@ export function EarlyAccessForm() {
           How did you hear about Mizan Kids?
           <select
             name="acquisitionSource"
-            className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none focus:border-[#173E39]"
+            className="mt-2 w-full rounded-2xl border border-[#D8D0C1] bg-[#F8F5F0] px-4 py-3 outline-none transition focus:border-[#173E39] focus:ring-2 focus:ring-[#173E39]/10"
             defaultValue=""
           >
             <option value="">Choose one</option>
@@ -199,7 +231,9 @@ export function EarlyAccessForm() {
         </Button>
 
         {message ? (
-          <p className={status === "error" ? "text-sm text-[#8C3D31]" : "text-sm text-[#173E39]"}>{message}</p>
+          <p aria-live="polite" className={status === "error" ? "text-sm text-[#8C3D31]" : "text-sm text-[#173E39]"}>
+            {message}
+          </p>
         ) : null}
       </form>
     </Card>

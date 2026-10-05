@@ -20,6 +20,12 @@ export function SiteFooter() {
           <a href={`mailto:${brand.email}`} className="transition hover:text-[#173E39]">{brand.email}</a>
         </div>
       </Container>
+
+      <div className="border-t border-[#E7DFD2] bg-[#F5F1EB]">
+        <Container className="py-4 text-center text-sm text-[#3B4E4A]">
+          © 2026 Mizan Kids
+        </Container>
+      </div>
     </footer>
   );
 }

@@ -2,50 +2,50 @@ export const subjectCards = [
   {
     id: "quran",
     title: "Quran",
-    description: "Build confidence with memorization, recitation, and meaning.",
+    description: "Build confidence with recitation, memorization, and understanding over time.",
     accent: "bg-[#E9F1EE] text-[#173E39]",
   },
   {
     id: "arabic",
     title: "Arabic",
-    description: "Learn letters, vocabulary, and everyday understanding.",
+    description: "Recognize letters, build vocabulary, and grow in everyday Arabic understanding.",
     accent: "bg-[#F6EDDC] text-[#173E39]",
   },
   {
     id: "salah",
     title: "Salah & Fiqh",
-    description: "Practice essential prayer habits and understanding.",
+    description: "Practice key prayer habits and essential Islamic understanding with confidence.",
     accent: "bg-[#EAF4F2] text-[#173E39]",
   },
   {
     id: "aqeedah",
     title: "Aqeedah",
-    description: "Grow in faith with clear, age-appropriate foundations.",
+    description: "Grow in faith with clear foundations rooted in belief, trust, and purpose.",
     accent: "bg-[#FCEEDB] text-[#173E39]",
   },
   {
     id: "duas",
     title: "Duas",
-    description: "Make everyday duas meaningful, memorable, and practical.",
+    description: "Learn daily duas that children can remember and use with meaning.",
     accent: "bg-[#EAF4F7] text-[#173E39]",
+  },
+  {
+    id: "prophets",
+    title: "Prophets",
+    description: "Learn from the stories, lessons, and examples of the Prophets.",
+    accent: "bg-[#F3E9E1] text-[#173E39]",
   },
   {
     id: "seerah",
     title: "Seerah",
-    description: "Learn from the stories and character of the Prophets.",
-    accent: "bg-[#F3E9E1] text-[#173E39]",
+    description: "Explore the life, character, and lessons of Prophet Muhammad ﷺ.",
+    accent: "bg-[#EEF5EA] text-[#173E39]",
   },
   {
     id: "akhlaq",
     title: "Akhlaq",
-    description: "Build character with kindness, responsibility, and gratitude.",
+    description: "Build character with kindness, responsibility, gratitude, and good manners.",
     accent: "bg-[#ECF6EA] text-[#173E39]",
-  },
-  {
-    id: "more",
-    title: "More coming",
-    description: "A growing curriculum across Islamic foundations and daily life.",
-    accent: "bg-[#F3F1ED] text-[#173E39]",
   },
 ];
 
@@ -53,46 +53,61 @@ export const faqs = [
   {
     question: "What is Mizan Kids?",
     answer:
-      "Mizan Kids is a structured, interactive Islamic learning platform for Muslim children. It helps children build practice, confidence, and understanding over time in a warm, encouraging way.",
+      "Mizan Kids is a warm, structured Islamic learning experience for Muslim children. It combines short interactive lessons, guided practice, and clear parent progress in one place.",
   },
   {
     question: "What ages is Mizan Kids designed for?",
     answer:
-      "Mizan Kids is designed for Muslim children approximately ages 4–12, with learning pathways that can grow with a child over time.",
+      "Mizan Kids is designed for children approximately ages 4–12, with learning paths that grow with the child over time.",
   },
   {
     question: "What will my child learn?",
     answer:
-      "Children can practice across Quran, Arabic, Salah, Seerah, duas, akhlaq, and other age-appropriate Islamic learning areas with a clear progression of skills.",
+      "Children can practice across Quran, Arabic, Salah, Duas, Aqeedah, Seerah, Akhlaq, Prophets, and other age-appropriate Islamic learning areas in a clear and encouraging progression.",
   },
   {
     question: "Do I need an account to join Early Access?",
     answer:
-      "No. Just enter your name and email to reserve your Early Access spot. You won’t need to create an account or add payment information yet.",
+      "No. You can join Early Access with your name and email to reserve your place without creating an account or adding payment information yet.",
+  },
+  {
+    question: "Do children need their own email?",
+    answer:
+      "No. One parent email is enough for Early Access; children do not need their own email address to join the family list.",
+  },
+  {
+    question: "Can I add more than one child?",
+    answer:
+      "Yes. The Early Access form supports multiple children so families can share their ages and learning interests in one place.",
   },
   {
     question: "What happens after I join Early Access?",
     answer:
-      "You’ll be added to the Early Access list and get updates about launch, availability, and your access benefit when the platform is ready.",
+      "You’ll be added to the Early Access list and receive updates about launch timing, activation details, and access information as the platform nears launch.",
   },
   {
     question: "How do the 30 free days work?",
     answer:
-      "The 30-day Early Access period begins when the eligible family activates after launch. It is designed to give families a full trial without requiring payment upfront.",
+      "The 30-day Early Access benefit begins when an eligible family activates after launch, giving families a full trial period without requiring a credit card upfront.",
   },
   {
     question: "When does Mizan Kids launch?",
     answer:
-      "The public launch target is December 1, 2026. Families who join Early Access can look out for launch updates and activation details closer to launch.",
+      "The public launch target is December 1, 2026. Families who join Early Access can look out for launch updates and activation details as we approach that date.",
   },
   {
     question: "Will I be able to see my child’s progress?",
     answer:
-      "Yes. A core part of the long-term product is helping parents clearly understand what a child knows, what they are learning, and what comes next.",
+      "Yes. A core part of the experience is helping parents understand what a child knows, what they are practicing, and what comes next in a clear and encouraging way.",
   },
   {
     question: "How is Islamic content reviewed?",
     answer:
-      "Mizan Kids is being designed with a structured content workflow and a careful Islamic review process so learning stays age-appropriate, thoughtful, and clear.",
+      "Mizan Kids is being designed with a structured review process to keep the content age-appropriate, clear, and rooted in sound Islamic understanding.",
+  },
+  {
+    question: "Does Mizan Kids replace a Quran teacher or Islamic school?",
+    answer:
+      "No. Mizan Kids is designed to support learning at home and complement a child’s broader Islamic education and guidance from trusted teachers and family.",
   },
 ];
