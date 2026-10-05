@@ -28,16 +28,16 @@ const lessons: Lesson[] = [
   {
     id: "salah-basics",
     title: "Salah Basics",
-    age: "5–8",
+    age: "Ages 5–8",
     summary: "Learn the five daily prayers and basic prayer concepts.",
     questions: [
       {
         id: "salah-order",
-        prompt: "Tap the five daily prayers from first to last.",
+        prompt: "Put the five daily prayers in order.",
         type: "tap-rank",
         options: ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"],
         correct: ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"],
-        explanation: "The daily prayer order is Fajr, Dhuhr, Asr, Maghrib, and Isha.",
+        explanation: "Fajr comes first, followed by Dhuhr, Asr, Maghrib, and Isha.",
       },
       {
         id: "salah-count",
@@ -76,7 +76,7 @@ const lessons: Lesson[] = [
   {
     id: "arabic-letters",
     title: "Arabic Letters",
-    age: "4–7",
+    age: "Ages 4–7",
     summary: "Recognize and match beginner Arabic letters.",
     questions: [
       {
@@ -105,7 +105,7 @@ const lessons: Lesson[] = [
       },
       {
         id: "sequence-letters",
-        prompt: "Which letter comes next? \n ا → ب → ?",
+        prompt: "Which letter comes next? ا → ب → ?",
         type: "multiple-choice",
         options: ["ت", "م", "ن", "د"],
         correct: "ت",
@@ -124,7 +124,7 @@ const lessons: Lesson[] = [
   {
     id: "good-character",
     title: "Good Character",
-    age: "6–10",
+    age: "Ages 6–10",
     summary: "Practice Islamic manners through everyday situations.",
     questions: [
       {
@@ -184,6 +184,7 @@ export function InteractiveDemo() {
   const [submitted, setSubmitted] = useState(false);
   const [feedback, setFeedback] = useState<string | null>(null);
   const [explanation, setExplanation] = useState<string | null>(null);
+  const [isAnswerCorrect, setIsAnswerCorrect] = useState<boolean | null>(null);
   const [correctCount, setCorrectCount] = useState(0);
   const [completedLessons, setCompletedLessons] = useState<string[]>([]);
   const [lessonScores, setLessonScores] = useState<Record<string, number>>({});
@@ -191,11 +192,15 @@ export function InteractiveDemo() {
   const activeLesson = lessons[lessonIndex];
   const activeQuestion = activeLesson.questions[questionIndex];
   const isLastQuestion = questionIndex === activeLesson.questions.length - 1;
-  const progress = ((questionIndex + 1) / activeLesson.questions.length) * 100;
   const questionReady =
     activeQuestion.type === "tap-rank"
       ? selectedOrder.length === normalizeCorrect(activeQuestion).length
       : Boolean(selectedChoice);
+  const progressSegments = Array.from({ length: activeLesson.questions.length }, (_, index) => {
+    if (index < questionIndex) return true;
+    if (index === questionIndex && submitted) return true;
+    return false;
+  });
 
   function resetQuestionState() {
     setSelectedChoice(null);
@@ -203,6 +208,11 @@ export function InteractiveDemo() {
     setSubmitted(false);
     setFeedback(null);
     setExplanation(null);
+    setIsAnswerCorrect(null);
+  }
+
+  function clearOrder() {
+    setSelectedOrder([]);
   }
 
   function startLesson(index: number) {
@@ -215,16 +225,18 @@ export function InteractiveDemo() {
 
   function submitAnswer() {
     const correctValues = normalizeCorrect(activeQuestion);
-    const isCorrect =
+    const correct =
       activeQuestion.type === "tap-rank"
         ? JSON.stringify(selectedOrder) === JSON.stringify(correctValues)
         : selectedChoice === activeQuestion.correct;
 
-    if (isCorrect) {
-      setFeedback("Nice work! You got it.");
+    setIsAnswerCorrect(correct);
+
+    if (correct) {
+      setFeedback("You got it!");
       setCorrectCount((count) => count + 1);
     } else {
-      setFeedback("Almost there! Let’s look at it together.");
+      setFeedback("Almost! Let’s try that once more.");
     }
 
     setExplanation(activeQuestion.explanation);
@@ -250,15 +262,6 @@ export function InteractiveDemo() {
     resetQuestionState();
   }
 
-  function handleLessonRestart() {
-    resetQuestionState();
-    setQuestionIndex(0);
-    setCorrectCount(0);
-    setSubmitted(false);
-    setFeedback(null);
-    setExplanation(null);
-  }
-
   function handleBackToLessons() {
     setView("landing");
     setQuestionIndex(0);
@@ -267,6 +270,7 @@ export function InteractiveDemo() {
     setSubmitted(false);
     setFeedback(null);
     setExplanation(null);
+    setIsAnswerCorrect(null);
   }
 
   function renderQuestion() {
@@ -282,41 +286,28 @@ export function InteractiveDemo() {
                   type="button"
                   onClick={() => {
                     if (submitted) return;
-                    if (selectedOrder.includes(option)) return;
-                    setSelectedOrder((current) => [...current, option]);
+                    const nextOrder = selectedOrder.includes(option)
+                      ? selectedOrder.filter((item) => item !== option)
+                      : [...selectedOrder, option];
+                    setSelectedOrder(nextOrder);
                   }}
-                  className={`relative min-h-[64px] rounded-2xl border px-4 py-3 text-left text-base font-semibold transition ${
+                  className={`relative min-h-[72px] rounded-2xl border px-4 py-3 text-left text-lg font-bold transition ${
                     selectedIndex >= 0
-                      ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39]"
-                      : "border-[#D8D0C1] bg-[#F8F5F0] text-[#173E39] hover:border-[#173E39]"
+                      ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
+                      : "border-[#D8D0C1] bg-[#F8F5F0] text-[#173E39] hover:border-[#173E39] hover:bg-[#F2F7F5]"
                   }`}
                 >
                   <span className="flex items-center justify-between gap-3">
                     <span>{option}</span>
-                    {selectedIndex >= 0 ? <span className="rounded-full bg-[#173E39] px-2 py-1 text-xs text-white">{selectedIndex + 1}</span> : null}
+                    {selectedIndex >= 0 ? (
+                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#173E39] text-sm font-black text-white">
+                        {selectedIndex + 1}
+                      </span>
+                    ) : null}
                   </span>
                 </button>
               );
             })}
-          </div>
-
-          <div className="flex flex-col gap-3 sm:flex-row">
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => setSelectedOrder((current) => current.slice(0, -1))}
-              className="w-full sm:w-auto"
-            >
-              Undo Last
-            </Button>
-            <Button
-              type="button"
-              variant="ghost"
-              onClick={() => setSelectedOrder([])}
-              className="w-full sm:w-auto"
-            >
-              Start Over
-            </Button>
           </div>
         </div>
       );
@@ -333,9 +324,9 @@ export function InteractiveDemo() {
                 if (submitted) return;
                 setSelectedChoice(option);
               }}
-              className={`min-h-[72px] rounded-2xl border px-4 py-3 text-center text-2xl font-black transition ${
+              className={`min-h-[82px] rounded-2xl border px-4 py-3 text-center text-3xl font-black transition ${
                 selectedChoice === option
-                  ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39]"
+                  ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
                   : "border-[#D8D0C1] bg-[#F8F5F0] text-[#173E39] hover:border-[#173E39]"
               }`}
             >
@@ -356,9 +347,9 @@ export function InteractiveDemo() {
               if (submitted) return;
               setSelectedChoice(option);
             }}
-            className={`rounded-2xl border px-4 py-3 text-left text-base font-medium transition ${
+            className={`rounded-2xl border px-4 py-4 text-left text-base font-medium leading-6 transition ${
               selectedChoice === option
-                ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39]"
+                ? "border-[#173E39] bg-[#EAF4F2] text-[#173E39] shadow-[0_12px_25px_rgba(23,62,57,0.08)]"
                 : "border-[#D8D0C1] bg-[#F8F5F0] text-[#173E39] hover:border-[#173E39]"
             }`}
           >
@@ -375,34 +366,49 @@ export function InteractiveDemo() {
         <div className="space-y-6">
           <div className="space-y-3">
             <p className="text-sm uppercase tracking-[0.18em] text-[#5D6E6A]">Try Mizan Kids</p>
-            <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">Explore three short sample lessons.</h2>
-            <p className="text-base text-[#38514d]">No account required. No payment required.</p>
+            <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">Choose one of three short sample lessons.</h2>
+            <p className="text-base text-[#38514d]">No account or payment required.</p>
           </div>
 
-          <div className="rounded-2xl border border-[#D8D0C1] bg-[#F7F1E7] p-4 text-sm font-medium text-[#173E39]">
-            {completedLessons.length} of {lessons.length} sample lessons completed
+          <div className="rounded-2xl border border-[#E7DCC7] bg-[#F7F1E7] p-4 text-sm text-[#173E39]">
+            <div className="flex items-center gap-3 font-medium">
+              <span className="inline-flex items-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-[#173E39]" />
+                {completedLessons.length} of {lessons.length} lessons completed
+              </span>
+            </div>
           </div>
 
           <div className="grid gap-4 md:grid-cols-3">
-            {lessons.map((lesson, index) => (
-              <div key={lesson.id} className="rounded-[24px] border border-[#E7DCC7] bg-[#FFFDFB] p-5">
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <p className="text-xs uppercase tracking-[0.18em] text-[#5D6E6A]">Lesson {index + 1}</p>
-                  {completedLessons.includes(lesson.id) ? (
-                    <span className="rounded-full bg-[#EAF4F2] px-2 py-1 text-xs font-bold text-[#173E39]">Completed</span>
-                  ) : null}
+            {lessons.map((lesson, index) => {
+              const completed = completedLessons.includes(lesson.id);
+              return (
+                <div key={lesson.id} className="flex h-full flex-col rounded-[24px] border border-[#E7DCC7] bg-[#FFFDFB] p-5 shadow-[0_10px_22px_rgba(23,62,57,0.03)]">
+                  <div className="mb-4 flex items-center justify-between gap-3">
+                    <p className="text-xs uppercase tracking-[0.18em] text-[#5D6E6A]">Lesson {index + 1}</p>
+                    {completed ? (
+                      <span className="rounded-full bg-[#EAF4F2] px-2 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-[#173E39]">Completed</span>
+                    ) : null}
+                  </div>
+
+                  <div className="flex-1">
+                    <h3 className="text-2xl font-black text-[#173E39]">{lesson.title}</h3>
+                    <div className="mt-3 flex flex-wrap items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-[#5D6E6A]">
+                      <span>{lesson.age}</span>
+                      <span>•</span>
+                      <span>5 questions</span>
+                      <span>•</span>
+                      <span>~3 min</span>
+                    </div>
+                    <p className="mt-4 text-sm leading-6 text-[#38514d]">{lesson.summary}</p>
+                  </div>
+
+                  <Button type="button" className="mt-6 w-full" onClick={() => startLesson(index)}>
+                    {completed ? "Review Lesson" : "Start Lesson"}
+                  </Button>
                 </div>
-                <h3 className="text-2xl font-black text-[#173E39]">{lesson.title}</h3>
-                <p className="mt-2 text-sm uppercase tracking-[0.14em] text-[#5D6E6A]">{lesson.age}</p>
-                <p className="mt-4 text-sm text-[#38514d]">{lesson.summary}</p>
-                <div className="mt-4 rounded-full bg-[#F4F0E8] px-3 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#173E39]">
-                  5 questions
-                </div>
-                <Button type="button" className="mt-6 w-full" onClick={() => startLesson(index)}>
-                  Start Lesson
-                </Button>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </Card>
@@ -418,17 +424,23 @@ export function InteractiveDemo() {
           <div className="inline-flex rounded-full bg-[#EAF4F2] px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#173E39]">
             MashaAllah!
           </div>
-          <h2 className="text-3xl font-black text-[#173E39]">Lesson complete</h2>
+          <h2 className="text-3xl font-black text-[#173E39]">{activeLesson.title} complete</h2>
           <p className="text-lg text-[#38514d]">
-            You scored {scoreOutOfFive} of {activeLesson.questions.length} correct.
+            You answered {scoreOutOfFive} of {activeLesson.questions.length} correctly.
           </p>
           <div className="rounded-2xl bg-[#F7F1E7] p-4 text-sm text-[#38514d]">
-            You practiced: ✓ {activeLesson.title}
+            <p className="font-semibold text-[#173E39]">You practiced:</p>
+            <ul className="mt-2 space-y-2">
+              <li>✓ {activeLesson.title}</li>
+              <li>✓ Daily prayer names</li>
+              <li>✓ Prayer order</li>
+              <li>✓ Basic Salah knowledge</li>
+            </ul>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
             <Button type="button" onClick={() => setView("landing")}>Try Another Lesson</Button>
-            <Button type="button" href="/#early-access" variant="ghost">Join Early Access</Button>
+            <Button type="button" href="/#early-access" variant="secondary">Join Early Access</Button>
           </div>
         </div>
       </Card>
@@ -442,7 +454,7 @@ export function InteractiveDemo() {
           <div className="inline-flex rounded-full bg-[#EAF4F2] px-3 py-1 text-xs font-bold uppercase tracking-[0.16em] text-[#173E39]">
             You explored Mizan Kids!
           </div>
-          <h2 className="text-3xl font-black text-[#173E39]">You completed all three sample lessons.</h2>
+          <h2 className="text-3xl font-black text-[#173E39]">All three sample lessons are complete.</h2>
           <div className="space-y-2 text-base text-[#38514d]">
             <p>✓ Salah Basics</p>
             <p>✓ Arabic Letters</p>
@@ -450,15 +462,15 @@ export function InteractiveDemo() {
           </div>
 
           <div className="rounded-2xl bg-[#F7F1E7] p-4 text-sm text-[#38514d]">
-            <p className="font-semibold text-[#173E39]">Join Early Access</p>
-            <p className="mt-1">Get 30 Days Free</p>
+            <p className="font-semibold text-[#173E39]">Want more structured Islamic learning for your child?</p>
+            <p className="mt-2">Join Early Access — Get 30 Days Free</p>
             <p className="mt-1">Launching December 1, 2026</p>
             <p className="mt-1">No credit card required</p>
           </div>
 
           <div className="flex flex-col gap-3 sm:flex-row">
-            <Button type="button" onClick={() => setView("landing")}>Restart Sample Lessons</Button>
-            <Button type="button" href="/#early-access" variant="ghost">Join Early Access</Button>
+            <Button type="button" onClick={() => setView("landing")}>Review Lessons</Button>
+            <Button type="button" href="/#early-access" variant="secondary">Join Early Access</Button>
           </div>
         </div>
       </Card>
@@ -468,56 +480,63 @@ export function InteractiveDemo() {
   return (
     <Card className="bg-white p-6 sm:p-8">
       <div className="space-y-5">
-        <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.18em] text-[#5D6E6A]">
+        <div className="flex items-center justify-between gap-3 text-xs font-semibold uppercase tracking-[0.18em] text-[#5D6E6A]">
           <span>{activeLesson.title}</span>
-          <span>Lesson {lessonIndex + 1} of {lessons.length}</span>
+          <span>Question {questionIndex + 1} of {activeLesson.questions.length}</span>
+        </div>
+
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            {activeLesson.questions.map((_, index) => (
+              <span
+                key={index}
+                className={`h-2 flex-1 rounded-full ${
+                  progressSegments[index] ? "bg-[#173E39]" : index === questionIndex ? "bg-[#D9D1C5]" : "bg-[#EEE7DD]"
+                }`}
+              />
+            ))}
+          </div>
         </div>
 
         <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-[0.18em] text-[#5D6E6A]">
-            <span>Question {questionIndex + 1}</span>
-            <span>{Math.round(progress)}% complete</span>
-          </div>
-          <div className="h-2.5 rounded-full bg-[#EEE7DD]">
-            <div className="h-2.5 rounded-full bg-[#173E39]" style={{ width: `${progress}%` }} />
-          </div>
-        </div>
-
-        <div className="space-y-4">
-          <p className="text-sm uppercase tracking-[0.18em] text-[#5D6E6A]">{activeQuestion.type === "tap-rank" ? "Tap to rank" : "Question"}</p>
-          <h3 className="text-2xl font-black text-[#173E39]">{activeQuestion.prompt}</h3>
+          <h3 className="text-3xl font-black leading-tight text-[#173E39]">{activeQuestion.prompt}</h3>
+          {activeQuestion.type === "tap-rank" ? (
+            <p className="text-base text-[#38514d]">Tap each prayer starting with the first.</p>
+          ) : null}
         </div>
 
         {renderQuestion()}
 
         {submitted ? (
           <div className="rounded-2xl border border-[#D8D0C1] bg-[#F7F1E7] p-4 text-sm text-[#38514d]">
-            <p className="text-base font-semibold text-[#173E39]">{feedback}</p>
-            <p className="mt-2">{explanation}</p>
+            <p className="text-lg font-black text-[#173E39]">{feedback}</p>
+            <p className="mt-2 leading-6">{explanation}</p>
           </div>
         ) : null}
 
         <div className="flex flex-col gap-3 sm:flex-row">
           {!submitted ? (
-            <Button
-              type="button"
-              onClick={submitAnswer}
-              disabled={!questionReady}
-              className="w-full sm:w-auto"
-            >
+            <Button type="button" onClick={submitAnswer} disabled={!questionReady} className="w-full sm:w-auto">
               Check My Answer
             </Button>
-          ) : (
+          ) : isAnswerCorrect ? (
             <Button type="button" onClick={advanceQuestion} className="w-full sm:w-auto">
-              {isLastQuestion ? "See results" : "Continue"}
+              {isLastQuestion ? "See results" : "Next Question"}
+            </Button>
+          ) : (
+            <Button type="button" onClick={() => resetQuestionState()} className="w-full sm:w-auto">
+              Try Again
             </Button>
           )}
 
-          <Button type="button" variant="ghost" onClick={handleLessonRestart} className="w-full sm:w-auto">
-            Restart Lesson
-          </Button>
+          {activeQuestion.type === "tap-rank" ? (
+            <Button type="button" variant="ghost" onClick={clearOrder} disabled={selectedOrder.length === 0} className="w-full sm:w-auto">
+              Clear Order
+            </Button>
+          ) : null}
+
           <Button type="button" variant="ghost" onClick={handleBackToLessons} className="w-full sm:w-auto">
-            Back to Lessons
+            ← Back to Lessons
           </Button>
         </div>
       </div>

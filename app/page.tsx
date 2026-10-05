@@ -119,7 +119,7 @@ export default function Home() {
             <div className="max-w-2xl space-y-4">
               <Badge>Subjects</Badge>
               <h2 className="text-3xl font-black text-[#173E39] sm:text-4xl">
-                Age-appropriate learning across the essentials of Islamic life.
+                Core Islamic learning, broken into clear skills that grow with your child.
               </h2>
             </div>
             <Button href="/demo" variant="ghost">
@@ -134,10 +134,10 @@ export default function Home() {
                 className="group h-full border-[#E7DCC7] bg-[#FFFDFB] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(23,62,57,0.08)]"
               >
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="inline-flex h-14 w-14 items-center justify-center rounded-[18px] border border-[#E8DEC5] bg-[#F8F3EA] shadow-[0_10px_20px_rgba(23,62,57,0.08)]">
+                  <div className={`inline-flex h-14 w-14 items-center justify-center rounded-[18px] border border-[#E8DEC5] shadow-[0_10px_20px_rgba(23,62,57,0.08)] ${subject.accent}`}>
                     <SubjectIllustration id={subject.id} />
                   </div>
-                  <div className="h-9 w-9 rounded-full border border-[#E7DCC7] bg-[#F7F1E7]" />
+                  <div className="h-8 w-8 rounded-md bg-[#F1E8D8]" aria-hidden="true" />
                 </div>
                 <div className="mb-4 text-lg font-black text-[#173E39]">{subject.title}</div>
                 <p className="text-base text-[#38514d]">{subject.description}</p>
@@ -294,64 +294,73 @@ function SubjectIllustration({ id }: { id: string }) {
   switch (id) {
     case "quran":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <path d="M12 20c5-5 11-7 20-7s15 2 20 7v24c-5 5-11 7-20 7s-15-2-20-7V20Z" className={`${stroke} fill-none`} strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
-          <path d="M20 22.5V42c4.4-2.3 8.8-3.4 12-3.4 3.2 0 7.6 1.1 12 3.4V22.5M44 22.5c-4.4 2.3-8.8 3.5-12 3.5s-7.6-1.2-12-3.5" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <path d="M18 18.5c5-3.5 10.5-5.2 14-5.2 6.8 0 12.4 2.2 20 8.5V45c-5.8-5-11.4-7.2-20-7.2-4.2 0-8.8 1.3-14 5.2V18.5Z" className="fill-[#F7F1E7]" stroke="#173E39" strokeWidth="2.4" strokeLinejoin="round" />
+          <path d="M18 18.5v26.8M32 13.3v31.5M44 21.3v22.4" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M26 27h12M26 35h12" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
         </svg>
       );
     case "arabic":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <rect x="14" y="16" width="36" height="32" rx="9" className="fill-[#F9D287]" stroke="#173E39" strokeWidth="2.2" />
-          <path d="M24 40c2.9-6.8 7-10.2 16-12M22 28c2.8 0 5.1 1 7.2 3.1M37 28c-2.7 0-4.9 1-6.8 3.2" className={`${stroke} fill-none`} strokeWidth="2.4" strokeLinecap="round" />
-          <path d="M32 20v24" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <rect x="15" y="16" width="34" height="32" rx="10" className="fill-[#F9D287]" stroke="#173E39" strokeWidth="2.3" />
+          <path d="M22 39c3.8-7 7.8-10.4 18-12" className={`${stroke} fill-none`} strokeWidth="2.4" strokeLinecap="round" />
+          <path d="M26 27.5c2.2 0 4.2 1 6.1 3M38 27.5c-2.3 0-4.3 1-6 3" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <text x="32" y="39" textAnchor="middle" fontSize="20" fontWeight="700" fill="#173E39" fontFamily="Noto Naskh Arabic, serif">ا</text>
         </svg>
       );
     case "salah":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <rect x="16" y="20" width="32" height="24" rx="6" className="fill-[#E8F5F1]" stroke="#173E39" strokeWidth="2.2" />
-          <path d="M22 26h20M22 32h20M22 38h14" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
-          <path d="M24 20V14M40 20V14M18 46h28" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <path d="M20 25.5h24v17.5H20z" className="fill-[#DDEEEB]" stroke="#173E39" strokeWidth="2.3" strokeLinejoin="round" />
+          <path d="M18 43h28" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M24 25.5v-6M40 25.5v-6M18 25.5v-6M46 25.5v-6" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M24 32.5h16M24 37h10" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M30 18 32 12l2 6" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       );
     case "aqeedah":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <path d="M32 14 38 25l12 2-9 9 2 12-11-7-11 7 2-12-9-9 12-2 6-11Z" className="fill-[#F7C979]" stroke="#173E39" strokeWidth="2.2" strokeLinejoin="round" />
-          <path d="M26 35h12M32 29v12" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <path d="M32 14.5 38 24l11 2-8 8 2 11-11-6-11 6 2-11-8-8 11-2 6-9.5Z" className="fill-[#F7D68A]" stroke="#173E39" strokeWidth="2.3" strokeLinejoin="round" />
+          <circle cx="32" cy="31.5" r="5" className="fill-[#FFFDFB]" stroke="#173E39" strokeWidth="2.1" />
+          <path d="M32 26.5v10M27 31.5h10" className={`${stroke} fill-none`} strokeWidth="2.1" strokeLinecap="round" />
         </svg>
       );
     case "duas":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <path d="M14 35c0-8 6-14 18-14s18 6 18 14v9H14v-9Z" className="fill-[#DDEFF0]" stroke="#173E39" strokeWidth="2.2" strokeLinejoin="round" />
-          <path d="M22 35c3-4 7-6 10-6s7 2 10 6M26 22c0-5 3-8 6-8s6 3 6 8" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
-          <path d="M20 46c5-3 9-4 12-4s7 1 12 4" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <path d="M16 34c0-7.8 7.4-14 16-14s16 6.2 16 14v11H16V34Z" className="fill-[#E7F3F5]" stroke="#173E39" strokeWidth="2.3" strokeLinejoin="round" />
+          <path d="M22 30c2.5-3.8 5.5-5.8 10-5.8s7.5 2 10 5.8M18 46c4-3.2 8.5-4.8 14-4.8s10 1.6 14 4.8" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M26 22c0-4 2.8-7 6-7s6 3 6 7" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <circle cx="46" cy="19" r="2.2" className="fill-[#F4B342]" />
         </svg>
       );
     case "prophets":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <path d="M18 20h28v24H18z" className="fill-[#F9E9BE]" stroke="#173E39" strokeWidth="2.2" strokeLinejoin="round" />
-          <path d="M22 26h20M22 32h20M22 38h14" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
-          <path d="M28 18v-4h8v4" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <path d="M17 22h30v22H17z" className="fill-[#FBE7B8]" stroke="#173E39" strokeWidth="2.3" strokeLinejoin="round" />
+          <path d="M17 28h30M21 34h18M21 40h14" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M25 22V14h14v8" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+          <path d="M18 47c7-8 12-11 15-20M46 47c-7-8-12-11-15-20" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
         </svg>
       );
     case "seerah":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <path d="M16 42c8-10 12-16 16-22 3 4 6 8 12 12v22H16V42Z" className="fill-[#E7F0D8]" stroke="#173E39" strokeWidth="2.2" strokeLinejoin="round" />
-          <path d="M20 42c7-4 11-7 14-15M32 43c4-3 7-5 10-10" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
-          <path d="M40 20c6 3 8 8 8 13" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <path d="M14 42c8-12 12-18 18-24 6 6 11 12 18 19v19H14V42Z" className="fill-[#EAF2D6]" stroke="#173E39" strokeWidth="2.3" strokeLinejoin="round" />
+          <path d="M20 42c7-4 11-7 15-14M34 43c3-3 7-6 11-11" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M32 18c0-3 2-6 6-8" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
+          <path d="M44 21c8 2 10 8 10 13" className={`${stroke} fill-none`} strokeWidth="2.2" strokeLinecap="round" />
         </svg>
       );
     case "akhlaq":
       return (
-        <svg viewBox="0 0 64 64" className="h-8 w-8" aria-hidden="true">
-          <path d="M32 20c-6 0-10 5-10 10 0 7 6 12 10 16 4-4 10-9 10-16 0-5-4-10-10-10Z" className="fill-[#F4C7B4]" stroke="#173E39" strokeWidth="2.2" strokeLinejoin="round" />
-          <path d="M22 24c-6 1-9 5-9 10 0 6 5 11 13 14" className={`${stroke} fill-none`} strokeWidth="2.1" strokeLinecap="round" />
-          <path d="M42 24c6 1 9 5 9 10 0 6-5 11-13 14" className={`${stroke} fill-none`} strokeWidth="2.1" strokeLinecap="round" />
+        <svg viewBox="0 0 64 64" className="h-9 w-9" aria-hidden="true">
+          <path d="M32 18c-8.3 0-13.5 6.4-13.5 12.7 0 9.6 8.1 16.1 13.5 21.3 5.4-5.2 13.5-11.7 13.5-21.3C45.5 24.4 40.3 18 32 18Z" className="fill-[#F4CCBC]" stroke="#173E39" strokeWidth="2.3" strokeLinejoin="round" />
+          <path d="M25 26c-4.5 1-8 5-8 9.4 0 6.6 5 10.8 15 15.2" className={`${stroke} fill-none`} strokeWidth="2.1" strokeLinecap="round" />
+          <path d="M39 26c4.8 1.1 8.4 5.2 8.4 9.6 0 6.6-5 10.8-14.9 15.1" className={`${stroke} fill-none`} strokeWidth="2.1" strokeLinecap="round" />
+          <path d="M32 26.5v8.5" className={`${stroke} fill-none`} strokeWidth="2.1" strokeLinecap="round" />
         </svg>
       );
     default:
