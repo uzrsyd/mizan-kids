@@ -73,7 +73,7 @@ export const faqs = [
   {
     question: "Do children need their own email?",
     answer:
-      "No. One parent email is enough for Early Access; children do not need their own email address to join the family list.",
+      "No. Children won’t need their own email. When Mizan Kids launches, learner profiles will live under the parent or guardian account.",
   },
   {
     question: "Can I add more than one child?",
@@ -83,7 +83,7 @@ export const faqs = [
   {
     question: "What happens after I join Early Access?",
     answer:
-      "You’ll be added to the Early Access list and receive updates about launch timing, activation details, and access information as the platform nears launch.",
+      "We’ll send you a confirmation email so you know you’re on the list. Near launch, we’ll email you with instructions for activating your 30 free days.",
   },
   {
     question: "How do the 30 free days work?",

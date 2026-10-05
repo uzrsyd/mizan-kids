@@ -73,13 +73,6 @@ export default function Home() {
                 priority
               />
             </div>
-            <div className="absolute -bottom-5 left-4 rounded-2xl border border-[#E3D8C5] bg-[#F8F5F0] px-4 py-3 shadow-[0_12px_35px_rgba(23,62,57,0.08)]">
-              <div className="text-xs uppercase tracking-[0.16em] text-[#5D6E6A]">Progress</div>
-              <div className="mt-1 flex items-center gap-3">
-                <span className="text-2xl font-black text-[#173E39]">42</span>
-                <span className="text-sm text-[#38514d]">→ 55 mastery</span>
-              </div>
-            </div>
           </div>
         </Container>
       </Section>
@@ -131,13 +124,12 @@ export default function Home() {
             {subjectCards.map((subject) => (
               <Card
                 key={subject.id}
-                className="group h-full border-[#E7DCC7] bg-[#FFFDFB] transition hover:-translate-y-1 hover:shadow-[0_18px_40px_rgba(23,62,57,0.08)]"
+                className="h-full border-[#E7DCC7] bg-[#FFFDFB] shadow-[0_10px_22px_rgba(23,62,57,0.03)]"
               >
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className={`inline-flex h-14 w-14 items-center justify-center rounded-[18px] border border-[#E8DEC5] shadow-[0_10px_20px_rgba(23,62,57,0.08)] ${subject.accent}`}>
+                <div className="mb-4 flex items-center gap-3">
+                  <div className={`inline-flex h-14 w-14 items-center justify-center rounded-[18px] border border-[#E8DEC5] bg-white shadow-[0_10px_20px_rgba(23,62,57,0.06)] ${subject.accent}`}>
                     <SubjectIllustration id={subject.id} />
                   </div>
-                  <div className="h-8 w-8 rounded-md bg-[#F1E8D8]" aria-hidden="true" />
                 </div>
                 <div className="mb-4 text-lg font-black text-[#173E39]">{subject.title}</div>
                 <p className="text-base text-[#38514d]">{subject.description}</p>
@@ -168,18 +160,13 @@ export default function Home() {
 
           <Card className="overflow-hidden border-[#E7DCC7] bg-[#173E39] text-white">
             <div className="space-y-5">
-              <div className="flex items-center justify-between gap-4">
-                <span className="text-sm uppercase tracking-[0.18em] text-[#E7E8DA]">Example progress</span>
-                <span className="rounded-full bg-[#F4B342] px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.12em] text-[#173E39]">
-                  Strong
-                </span>
-              </div>
+              <span className="text-sm uppercase tracking-[0.18em] text-[#E7E8DA]">Example progress</span>
 
               <div className="space-y-5">
                 <div>
                   <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#F5F6F2]">
                     <span>Quran</span>
-                    <span className="text-base font-bold">82%</span>
+                    <span className="text-base font-bold">Strong · 82%</span>
                   </div>
                   <div className="h-2.5 rounded-full bg-white/20">
                     <div className="h-2.5 w-[82%] rounded-full bg-[#F4B342]" />
@@ -189,7 +176,7 @@ export default function Home() {
                 <div>
                   <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#F5F6F2]">
                     <span>Salah</span>
-                    <span className="text-base font-bold">68%</span>
+                    <span className="text-base font-bold">Keep practicing · 68%</span>
                   </div>
                   <div className="h-2.5 rounded-full bg-white/20">
                     <div className="h-2.5 w-[68%] rounded-full bg-[#6BA9A4]" />
@@ -199,7 +186,7 @@ export default function Home() {
                 <div>
                   <div className="mb-2 flex items-center justify-between text-sm font-semibold text-[#F5F6F2]">
                     <span>Akhlaq</span>
-                    <span className="text-base font-bold">91%</span>
+                    <span className="text-base font-bold">Excellent · 91%</span>
                   </div>
                   <div className="h-2.5 rounded-full bg-white/20">
                     <div className="h-2.5 w-[91%] rounded-full bg-[#E88C54]" />
