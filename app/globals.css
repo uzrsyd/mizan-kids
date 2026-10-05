@@ -29,6 +29,11 @@ html {
   scroll-behavior: smooth;
 }
 
+section[id],
+[id] {
+  scroll-margin-top: 6rem;
+}
+
 body {
   margin: 0;
   background: var(--background);
