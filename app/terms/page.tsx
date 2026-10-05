@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 
 export const metadata: Metadata = {
-  title: "Terms | Mizan Kids",
+  title: "Terms",
 };
 
 export default function TermsPage() {

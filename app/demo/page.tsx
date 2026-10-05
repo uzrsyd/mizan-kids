@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 
 export const metadata: Metadata = {
-  title: "Try a Free Lesson | Mizan Kids",
+  title: "Try a Free Lesson",
 };
 
 export default function DemoPage() {

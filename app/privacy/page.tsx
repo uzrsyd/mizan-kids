@@ -5,7 +5,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 
 export const metadata: Metadata = {
-  title: "Privacy | Mizan Kids",
+  title: "Privacy",
 };
 
 export default function PrivacyPage() {

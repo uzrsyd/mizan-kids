@@ -7,7 +7,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 
 export const metadata: Metadata = {
-  title: "Sign up | Mizan Kids",
+  title: "Sign up",
   robots: {
     index: false,
     follow: false,

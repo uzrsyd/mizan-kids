@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart, faLanguage, faMosque, type IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -306,42 +308,20 @@ export function InteractiveDemo() {
 
   function renderLessonIllustration(lessonId: string) {
     const base = "h-16 w-full rounded-[20px] border border-[#E7DCC7] bg-[#F7F1E7] p-3";
+    const iconMap: Record<string, { icon: IconDefinition; className: string }> = {
+      "salah-basics": { icon: faMosque, className: "text-[#173E39]" },
+      "arabic-letters": { icon: faLanguage, className: "text-[#173E39]" },
+      "good-character": { icon: faHeart, className: "text-[#173E39]" },
+    };
 
-    switch (lessonId) {
-      case "salah-basics":
-        return (
-          <div className={`${base} flex items-center justify-center`}>
-            <svg viewBox="0 0 120 80" className="h-16 w-full max-w-[140px]" aria-hidden="true">
-              <path d="M28 49h64V23H28z" fill="#DDEEEB" stroke="#173E39" strokeWidth="3" rx="8" />
-              <path d="M26 49h68" stroke="#173E39" strokeWidth="3" strokeLinecap="round" />
-              <path d="M32 23V14M88 23V14M26 23V14M94 23V14" stroke="#173E39" strokeWidth="3" strokeLinecap="round" />
-              <path d="M38 37h44M38 44h24" stroke="#173E39" strokeWidth="3" strokeLinecap="round" />
-              <path d="M60 14l4-8 4 8" fill="none" stroke="#173E39" strokeWidth="3" strokeLinejoin="round" />
-            </svg>
-          </div>
-        );
-      case "arabic-letters":
-        return (
-          <div className={`${base} flex items-center justify-center`}>
-            <svg viewBox="0 0 120 80" className="h-16 w-full max-w-[140px]" aria-hidden="true">
-              <rect x="22" y="20" width="76" height="34" rx="12" fill="#DDEFF6" stroke="#173E39" strokeWidth="3" />
-              <text x="60" y="47" textAnchor="middle" fontSize="26" fontWeight="700" fill="#173E39" fontFamily="serif">أ ب ت</text>
-            </svg>
-          </div>
-        );
-      case "good-character":
-        return (
-          <div className={`${base} flex items-center justify-center`}>
-            <svg viewBox="0 0 120 80" className="h-16 w-full max-w-[140px]" aria-hidden="true">
-              <path d="M60 18c-9.6 0-17.5 7.7-17.5 17.3C42.5 46.2 50.8 54 60 62c9.2-8 17.5-15.8 17.5-26.7C77.5 25.7 69.6 18 60 18Z" fill="#F7D8A5" stroke="#173E39" strokeWidth="3" strokeLinejoin="round" />
-              <path d="M42 30c-7 2-11 7-11 13 0 9 8 14 29 21" fill="none" stroke="#173E39" strokeWidth="3" strokeLinecap="round" />
-              <path d="M78 30c7 2 11 7 11 13 0 9-8 14-29 21" fill="none" stroke="#173E39" strokeWidth="3" strokeLinecap="round" />
-            </svg>
-          </div>
-        );
-      default:
-        return null;
-    }
+    const lessonIcon = iconMap[lessonId];
+    if (!lessonIcon) return null;
+
+    return (
+      <div className={`${base} flex items-center justify-center`}>
+        <FontAwesomeIcon icon={lessonIcon.icon} className={`h-8 w-8 ${lessonIcon.className}`} aria-hidden="true" />
+      </div>
+    );
   }
 
   function renderQuestion() {
